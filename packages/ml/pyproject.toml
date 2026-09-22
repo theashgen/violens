@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "violence-detection"
+version = "0.1.0"
+description = "Video-only violence classification research baseline"
+requires-python = ">=3.12"
+dependencies = ["torch==2.14.0", "torchvision==0.29.0", "av==18.1.0", "numpy==2.5.3", "scikit-learn==1.9.1", "PyYAML==6.0.3"]
+
+[tool.setuptools.packages.find]
+include = ["violence_detection*"]
