@@ -1,0 +1,16 @@
+data:
+  root: data/raw/Violence Fight Detection dataset/RLVS
+  manifest: data/splits.csv
+  num_frames: 16
+training:
+  epochs: 20
+  batch_size: 4
+  learning_rate: 0.001
+  seed: 42
+  freeze_backbone: true
+  device: auto
+  num_workers: 0
+  cpu_threads: 4
+output:
+  checkpoint: artifacts/checkpoints/best.pt
+  history: artifacts/metrics/training.json

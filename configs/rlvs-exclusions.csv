@@ -1,0 +1,6 @@
+path,reason
+train/Fight/file_002173.mp4,Identical bytes to train/NonFight/file_003180.mp4 with conflicting labels; exclude both pending review
+train/NonFight/file_003180.mp4,Identical bytes to train/Fight/file_002173.mp4 with conflicting labels; exclude both pending review
+train/NonFight/file_003175.mp4,Identical bytes to val/NonFight/file_003816.mp4; preserve supplied validation membership
+train/NonFight/file_003366.mp4,Identical bytes to val/NonFight/file_003880.mp4; preserve supplied validation membership
+train/NonFight/file_003419.mp4,Identical bytes to val/NonFight/file_003914.mp4; preserve supplied validation membership
