@@ -1,36 +1,28 @@
 # Violence Detection in Surveillance Videos
 
-A Phase 1 research baseline: upload a video, run a trained video classifier, and review its **Violence / Non-Violence** prediction. Training is an offline PyTorch workflow. The web application never trains models, generates demo predictions, or substitutes random weights for a missing checkpoint.
+A research prototype supporting uploaded-video classification, single-camera testing, and continuous multi-camera CCTV monitoring with live previews and **NORMAL / VIOLENCE** detection states. Training is an offline PyTorch workflow. The web application never trains models, generates demo predictions, or substitutes random weights for a missing checkpoint.
 
 ## Architecture
 
 ```text
-                         MONOREPO
- ┌──────────────────────────────┐
- │ apps/web                     │
- │ Next.js · Tailwind · shadcn/ui│
- └──────────────┬───────────────┘
-                │ multipart HTTP
-                ▼
- ┌──────────────────────────────┐
- │ apps/api                     │
- │ FastAPI · upload validation  │
- └──────────────┬───────────────┘
-                │ Python function call
-                ▼
- ┌──────────────────────────────┐
- │ packages/ml                  │◀── Offline inspection/training/evaluation CLIs
- │ PyAV → sampling → torchvision│
- │ MC3-18 → binary prediction   │
- └──────────────┬───────────────┘
-                ▼
-     artifacts/checkpoints/best.pt
+RTSP / HTTP camera / paced local test video
+  → per-camera PyAV capture → bounded timestamped rolling buffer
+  → latest pending temporal window → shared MC3-18 checkpoint
+  → violence score → per-camera hysteresis → camera state / active event
+                                              ↓ WebSocket updates
+Next.js /monitor ← sampled MJPEG previews ← FastAPI camera manager
+
+Next.js /       → multipart upload → shared MC3-18 → whole-video prediction
+Next.js /live   → single-camera/webcam diagnostic mode
+Offline PyTorch training → artifacts/checkpoints/best.pt
 ```
 
 | Location | Responsibility |
 | --- | --- |
-| `apps/web` | Server-rendered page shell and an interactive upload/analysis workspace |
-| `apps/api/violence_api/app.py` | Health, bounded multipart uploads, one loaded model, inference responses |
+| `apps/web` | Upload workspace, single-camera diagnostics, multi-camera dashboard |
+| `apps/api/violence_api/app.py` | Upload and camera REST APIs, WebSocket state updates, MJPEG previews |
+| `apps/api/violence_api/surveillance.py` | Continuous capture, latest-window inference, per-camera states and hysteresis |
+| `apps/api/violence_api/stream.py` | Shared frame preprocessing and legacy single-camera sessions |
 | `packages/ml/violence_detection/video.py` | Shared decoding, sampling, pretrained preprocessing |
 | `packages/ml/violence_detection/dataset.py` | Inspection, duplicate checks, split manifests, dataset loading |
 | `packages/ml/violence_detection/model.py` | MC3-18 construction and device selection |
@@ -42,21 +34,21 @@ A Phase 1 research baseline: upload a video, run a trained video classifier, and
 | `tests` | ML and API behavior tests |
 | `data`, `artifacts` | Locally generated inputs/results; ignored by Git |
 
-No database, global frontend state library, job queue, or experiment tracking service is required. The web application has one page. Its layout stacks at narrower widths, follows the system light/dark preference, supports keyboard upload and drag/drop, and distinguishes actual upload progress from waiting for inference.
+No database, global frontend state library, job queue, or experiment tracking service is required. The web routes are `/` (uploads), `/live` (single-camera diagnostics), and `/monitor` (continuous monitoring). Its layout stacks at narrower widths, follows the system light/dark preference, supports keyboard upload and drag/drop, and distinguishes actual upload progress from waiting for inference.
 
 ## Setup
 
-Run commands from the repository root. Use Python **3.12+** and Node **22+**. The checked-in locks capture the versions verified locally (Python 3.14, Node 26 on Apple Silicon). GPU availability and wheel compatibility depend on the host. PyAV wheels include FFmpeg libraries; a separate FFmpeg executable is not required by the application.
+Run commands from the repository root. Use Python **3.12+**, Node **22+**, and Bun for the root workspace scripts. The checked-in locks capture the versions verified locally (Python 3.14, Node 26 on Apple Silicon). GPU availability and wheel compatibility depend on the host. PyAV wheels include FFmpeg libraries; a separate FFmpeg executable is not required by the application.
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.lock.txt
 python -m pip install --no-build-isolation --no-deps -e packages/ml -e apps/api
-npm ci
+bun install --frozen-lockfile
 ```
 
-`requirements.lock.txt` pins the Python environment, including development tools. Package manifests specify runtime dependencies; `requirements-dev.txt` lists direct test/lint dependencies. `package-lock.json` pins the npm workspace. For CUDA, install the matching PyTorch/torchvision builds from the [official installer](https://pytorch.org/get-started/locally/) and record the resulting environment.
+`requirements.lock.txt` pins the Python environment, including development tools. Package manifests specify runtime dependencies; `requirements-dev.txt` lists direct test/lint dependencies. `bun.lock` pins the Bun workspace; `package-lock.json` is retained for npm users. To use npm without Bun, run commands directly with `npm --prefix apps/web run <command>` after `npm ci`. For CUDA, install the matching PyTorch/torchvision builds from the [official installer](https://pytorch.org/get-started/locally/) and record the resulting environment.
 
 ## Dataset: download, inspect, then split
 
@@ -119,7 +111,7 @@ python -m violence_detection.video \
   --video 'data/raw/Violence Fight Detection dataset/RLVS/train/Fight/file_002001.mp4'
 ```
 
-Expected shape: **`[3, 16, 112, 112]`**, dtype **`torch.float32`**. The API and training dataset use this exact function.
+Expected shape: **`[3, 16, 112, 112]`**, dtype **`torch.float32`**. Uploaded-video inference and the training dataset use this exact function. Continuous monitoring reuses its spatial transform but samples a short timestamped window instead of the entire video.
 
 1. PyAV decodes sequentially. A bounded count pass detects corrupt frames and avoids unreliable container frame counts.
 2. Uniform frame indices span the whole video, including its first and last frames. Short clips repeat indices.
@@ -127,7 +119,7 @@ Expected shape: **`[3, 16, 112, 112]`**, dtype **`torch.float32`**. The API and 
 4. `MC3_18_Weights.KINETICS400_V1.transforms()` performs bilinear resize to 128×171, 112×112 center crop, scaling, normalization, and channel arrangement. No custom normalization constants are used.
 5. Batched input is **`[B, C, T, H, W]`**. Model output is **`[B, 2]`** logits. Softmax produces the predicted class and its score.
 
-Limits: 120 seconds, 12,000 decoded frames, and 3840×2160 pixel area per frame. HTTP uploads additionally have a 100 MiB file limit. Long videos need a deliberate windowing approach in a later phase; silently truncating them would change the prediction semantics.
+Limits: 120 seconds, 12,000 decoded frames, and 3840×2160 pixel area per frame. HTTP uploads additionally have a 100 MiB file limit. These limits apply to uploads, not continuous capture. Use monitoring mode for ongoing streams; uploads are not silently truncated.
 
 ## Model choice
 
@@ -186,7 +178,7 @@ export CHECKPOINT_PATH="$PWD/artifacts/checkpoints/best.pt"
 uvicorn violence_api.app:app --host 127.0.0.1 --port 8000
 ```
 
-Start one worker for this local baseline. Model inference runs outside the async event loop; concurrent inference attempts return 429 rather than running multiple memory-heavy forwards. Uploaded files use temporary storage and are removed after inference. No incident history is retained.
+Start one worker for this local baseline. Model inference runs outside the async event loop; concurrent inference attempts return 429 rather than running multiple memory-heavy forwards. Uploaded files use temporary storage and are removed after inference. Only the current active camera event is retained in memory; closed or interrupted events are not archived.
 
 ```bash
 curl http://localhost:8000/health
@@ -219,7 +211,7 @@ Optional environment settings are listed in `apps/api/.env.example`. Export them
 ```bash
 # Optional; defaults to http://localhost:8000
 cp apps/web/.env.example apps/web/.env.local
-npm run dev
+bun run dev
 ```
 
 Open **http://localhost:3000**. Select/drop a supported video, preview it, and run analysis. Browser preview depends on codec support; an AVI/MKV that cannot preview can still be analyzed by PyAV. Browser metadata is informational; the server validates actual contents. The model must be ready before analysis is enabled. Upload percentage reflects transferred bytes; the subsequent waiting state has no invented inference percentage.
@@ -227,8 +219,8 @@ Open **http://localhost:3000**. Select/drop a supported video, preview it, and r
 Production:
 
 ```bash
-npm run build
-npm run start
+bun run build
+bun run start
 ```
 
 `NEXT_PUBLIC_API_URL` is embedded at build time, so rebuild after changing it. This project uses Next.js's supported webpack mode because Turbopack's CSS worker could not bind its internal port in the development sandbox. There are no remote font downloads. Light/dark tokens follow the OS preference without a theme package.
@@ -242,11 +234,11 @@ ruff check packages apps/api tests
 ruff format --check packages apps/api tests
 mypy
 python -c 'import violence_detection.video, violence_detection.train, violence_api.app'
-npm run lint
-npm run typecheck
-npm run build
+bun run lint
+bun run typecheck
+bun run build
 npx playwright install chromium
-npm test
+bun run test
 ```
 
 Python tests exercise real decoding, short-clip sampling, dtype/layout, shared preprocessing, two-class model output, checkpoint compatibility, labels, deterministic grouped splits, leakage rejection, API prediction shape, unavailable/busy models, corrupted uploads, and streaming size limits. Random weights in tests verify plumbing only and never supply research metrics or application results.
@@ -255,10 +247,84 @@ Browser tests exercise empty/selected/uploading states, both prediction labels, 
 
 Formatting: `npx prettier --write 'apps/web/src/**/*.{ts,tsx,css}'`; Python: `ruff format packages apps/api tests`.
 
-## Scope and limitations
+## Continuous multi-camera monitoring (research prototype)
 
-This is a **video-only, whole-clip research classifier**. A single uniformly sampled clip can miss a brief incident, and center cropping can discard relevant context. Sampling whole-video indices differs from the pretrained evaluation's fixed-rate, multi-clip protocol. Spatial preprocessing follows the weights, while temporal sampling is a documented baseline approximation. Longer or variable-frame-rate clips can have uneven temporal coverage.
+### Connection troubleshooting
 
-Confidence is uncalibrated, labels can be noisy, and RLVS contains scenes beyond fixed surveillance cameras. Performance on this dataset does not establish performance on live CCTV. Source-group independence, domain shift, bias, calibration, and event-level performance require further research. Keep human review in the loop.
+The browser connects to the **backend WebSocket**, not directly to RTSP cameras.
+The backend continuously captures camera frames and publishes status updates.
+Install `requirements.lock.txt` (including `websockets`) and restart the API after
+upgrading; bare Uvicorn without a WebSocket transport cannot upgrade connections.
 
-Not implemented: audio, motion/pose branches, fusion, RTSP/CCTV streams, sliding windows, event localization, alerts, incident storage, authentication, cloud deployment, or an operational monitoring dashboard. The API is for local research, not an internet-facing upload service.
+```bash
+source .venv/bin/activate
+python -m pip install -r requirements.lock.txt
+python -m uvicorn violence_api.app:app --host 0.0.0.0 --port 8000
+```
+
+Run one API worker: camera state and the shared model are process-local.
+Set `NEXT_PUBLIC_API_URL` to the API address reachable from the browser and restart
+Next.js (rebuild production). On another machine, `localhost` refers to that
+machine, not the API host. HTTPS pages require an HTTPS API/WSS endpoint; reverse
+proxies must forward WebSocket Upgrade headers. The dashboard reconnects with
+backoff and marks displayed statuses as potentially stale when disconnected.
+
+Each monitor tile includes a live sampled MJPEG preview from
+`GET /api/v1/cameras/{camera_id}/preview`. All viewers share the camera's existing
+capture worker; opening a preview does not create another RTSP connection. Preview
+rate follows sampling (default up to 4 FPS), not full native camera FPS. Use a
+buffering-disabled proxy and HTTP/2 for larger grids; HTTP/1.1 browsers limit
+simultaneous connections per host. Previews carry camera imagery and require the
+same private-network protections as the API.
+
+`ONLINE` describes the camera connection; `BUFFERING` means frames are arriving
+but the first detection window is still filling. Low-FPS streams repeat nearest
+timestamped samples to create the model's 16-frame input rather than waiting for
+16 distinct frames. Extremely sparse footage has less motion information and
+needs separate validation.
+
+The uploaded-video `/api/v1/predict` route remains available. Continuous monitoring is separately available at **http://localhost:3000/monitor**. The API retains MC3-18 and the trained checkpoint, and maintains one bounded timestamped frame deque per camera. It samples at the configured rate, makes overlapping windows, and serializes inference through the existing shared model lock; stale windows are skipped rather than queued. RTSP feeds reconnect with exponential backoff. Local test videos can be configured as `file:///absolute/path/to/video.mp4` and loop at EOF.
+
+Configure cameras at API startup using `CAMERAS_JSON` (or add/remove them in the monitor dashboard):
+
+```bash
+export CAMERAS_JSON='[{"camera_id":"CCTV-01","name":"Entrance","url":"rtsp://user:pass@192.168.1.20/stream","window_seconds":4,"sample_fps":4,"stride_seconds":1,"positive_threshold":0.65,"negative_threshold":0.4,"positive_windows":3,"negative_windows":4}]'
+```
+
+Defaults are 4-second windows, 4 sampled frames/sec (16 frames), 1-second stride, score thresholds 0.65/0.40, and 3 positive / 4 negative windows. These are starter settings, not validated operating points. The camera API is `GET/POST /api/v1/cameras`, `DELETE /api/v1/cameras/{camera_id}`, and real-time WebSocket `/api/v1/cameras/ws`; uploaded inference and the previous single-stream live test remain. `OFFLINE` and `ERROR` are distinct from `NORMAL`. Event records are in memory and close when hysteresis returns the camera to normal. Camera URLs, which may include credentials, are not returned in status payloads.
+
+Run a local looping test source by setting `url` to a `file://` URI. This exercises continuous decode and reconnect behavior, not camera realism. For RTSP, supply an accessible URL and ensure network/firewall access. The dashboard reports score, inference latency, dropped windows, and connection state. Inference latency measures an individual forward path. The current `processed_fps` field is inverse inference duration, not measured capture FPS or sustained throughput. GPU/CPU utilization and comprehensive queue telemetry are not currently measured.
+
+### Multiple cameras and local testing
+
+Append additional objects to `CAMERAS_JSON`, each with a unique `camera_id`:
+
+```bash
+export CAMERAS_JSON='[{"camera_id":"CCTV-01","url":"rtsp://192.168.1.20/stream"},{"camera_id":"CCTV-02","url":"rtsp://192.168.1.21/stream"}]'
+python -m uvicorn violence_api.app:app --host 127.0.0.1 --port 8000
+```
+
+For hardware-free testing, replace a URL with `file:///absolute/path/to/test.mp4`.
+The adapter paces by video timestamps, reconnects at EOF, and resets the detector
+between loops. Use a video longer than the configured window. Camera registrations
+added through the UI disappear on restart; `CAMERAS_JSON` restores configured ones.
+URLs are server-accessible camera/file addresses, not browser WebSocket addresses.
+
+A single model is shared across upload, diagnostic, and monitoring modes. Each
+camera has at most one pending window; replacements increment dropped-window
+counts. This bounds application backlog but does not establish a latency SLA:
+network/decoder buffering, camera count, and hardware still need measurement.
+The model lock does not guarantee fairness across cameras.
+
+### Checkpoint compatibility
+
+No migration or retraining is required to load existing compatible MC3-18
+checkpoints. Monitoring uses the checkpoint frame count (normally 16) and existing
+class order `0 = non-violence`, `1 = violence`. Functional compatibility is not
+evidence that whole-video-trained weights are validated for temporal CCTV events.
+
+### Training and limitations
+
+Training remains unchanged: each source video currently produces one uniformly sampled 16-frame clip. Live inference samples frames from a short fixed-duration window. This temporal-distribution mismatch needs evaluation. RLVS video-level labels do **not** imply every short sub-window is positive; do not naively label every crop from a violence-labeled video as a positive training example. Window-aware training requires event annotations, carefully reviewed temporal localization, or a documented multiple-instance/weak-supervision strategy. The new stream feature does not itself train a CCTV-adapted checkpoint. Fine-tuning on representative, consented CCTV-style data and testing by independent camera/source are recommended; preserve source-disjoint splits and assess event-level recall/false alerts before tuning thresholds.
+
+Scores are uncalibrated model outputs, not probabilities of harm. RLVS does not represent arbitrary real CCTV, low-light/noisy footage, viewpoints, compression, or demographics. Dataset accuracy is not evidence of reliable real-world detection. Evaluate domain shift, bias, calibration, event-level performance, and latency; keep a human in the loop. The current API is a local research prototype, without authentication, TLS termination, durable incidents, or production hardening; do not expose it to the public internet.

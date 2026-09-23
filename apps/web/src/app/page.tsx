@@ -1,4 +1,5 @@
-import { Aperture, ArrowUpRight } from "lucide-react";
+import { Aperture, ArrowUpRight, Radio } from "lucide-react";
+import Link from "next/link";
 import { AnalysisWorkspace } from "@/components/analysis-workspace";
 
 export default function Page() {
@@ -25,25 +26,27 @@ export default function Page() {
               </p>
             </div>
           </div>
-          <span className="font-mono text-xs text-muted-foreground">
-            PHASE 01 <span className="hidden sm:inline">/ VIDEO BASELINE</span>
-          </span>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/monitor"
+              className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+            >
+              Camera monitor
+            </Link>
+            <Link
+              href="/live"
+              className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+            >
+              <Radio aria-hidden="true" className="size-3.5" />
+              Live cameras
+            </Link>
+            <span className="font-mono text-xs text-muted-foreground">
+              PHASE 02 <span className="hidden sm:inline">/ VIDEO + LIVE MONITORING</span>
+            </span>
+          </div>
         </div>
       </header>
       <main id="main" className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
-        <div className="mb-7 border-b pb-7">
-          <p className="mb-2 font-mono text-xs tracking-widest text-muted-foreground">
-            RESEARCH WORKSPACE
-          </p>
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Video analysis
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Upload a video to classify potentially violent activity.
-            <br className="hidden sm:block" /> Preview your footage, run the
-            baseline, and review its prediction.
-          </p>
-        </div>
         <AnalysisWorkspace />
         <section
           aria-labelledby="pipeline-title"

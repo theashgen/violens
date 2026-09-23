@@ -6,12 +6,12 @@
     "apps/web"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace @violence/web",
-    "build": "npm run build --workspace @violence/web",
-    "start": "npm run start --workspace @violence/web",
-    "lint": "npm run lint --workspace @violence/web",
-    "typecheck": "npm run typecheck --workspace @violence/web",
-    "test": "npm run test --workspace @violence/web"
+    "dev": "bun --filter @violence/web dev",
+    "build": "bun --filter @violence/web build",
+    "start": "bun --filter @violence/web start",
+    "lint": "bun --filter @violence/web lint",
+    "typecheck": "bun --filter @violence/web typecheck",
+    "test": "bun --filter @violence/web test"
   },
   "engines": {
     "node": ">=22"

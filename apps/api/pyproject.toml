@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "violence-api"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = ["violence-detection==0.1.0", "fastapi==0.141.1", "uvicorn==0.53.0", "python-multipart==0.0.32"]
+dependencies = ["violence-detection==0.1.0", "fastapi==0.141.1", "uvicorn==0.53.0", "websockets==15.0.1", "python-multipart==0.0.32"]
 
 [tool.setuptools.packages.find]
 include = ["violence_api*"]
