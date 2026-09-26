@@ -1,0 +1,17 @@
+# RLVS experiment configuration. Existing baseline config is unchanged.
+data:
+  root: data/raw/rlvs
+  manifest: data/rlvs_splits.csv
+  num_frames: 16
+training:
+  epochs: 10
+  batch_size: 4
+  learning_rate: 0.0001
+  num_workers: 0
+  cpu_threads: 4
+  seed: 42
+  device: auto
+  freeze_backbone: true
+output:
+  checkpoint: artifacts/checkpoints/rlvs-r3d18.pt
+  history: artifacts/metrics/rlvs-training.json

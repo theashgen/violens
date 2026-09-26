@@ -16,3 +16,5 @@ artifacts/
 .DS_Store
 playwright-report/
 test-results/
+paper_output/
+*.html

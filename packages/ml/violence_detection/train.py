@@ -1,4 +1,4 @@
-"""Offline supervised transfer learning. The test split is never loaded here."""
+"""Offline supervised transfer learning"""
 
 import argparse
 import json
@@ -31,7 +31,6 @@ def train(config: dict) -> None:
     device = select_device(settings["device"])
     root, manifest = Path(data["root"]), Path(data["manifest"])
     rows = read_manifest(manifest, root)
-    # Verify the inspected bytes, not just filenames, before fitting anything.
     for row in rows:
         if row["split"] != "test" and file_hash(root / row["path"]) != row["sha256"]:
             raise ValueError(f"Video changed since inspection: {row['path']}")
@@ -66,7 +65,7 @@ def train(config: dict) -> None:
     for epoch in range(1, settings["epochs"] + 1):
         model.train()
         if settings["freeze_backbone"]:
-            model.eval()  # Keep pretrained batch-normalization statistics frozen too.
+            model.eval()
         loss_sum = 0.0
         count = 0
         for step, (videos, labels) in enumerate(loaders["train"], start=1):
