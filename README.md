@@ -6,11 +6,11 @@ A research prototype supporting uploaded-video classification, single-camera tes
 
 A 1080p browser recording of selecting and playing a video, uploading it to the running FastAPI service, and receiving a **Non-Violence** prediction with **97.9%** model confidence from the trained MC3-18 checkpoint.
 
-<video controls width="1280" src="https://github.com/theashgen/violens/raw/refs/heads/main/docs/demo/project-demo.mp4">
-  <a href="docs/demo/project-demo.mp4">Play or download the application demo</a>
-</video>
+[![Watch the working application demo](docs/demo/project-demo-preview.png)](https://github.com/theashgen/violens/blob/main/docs/demo/project-demo.mp4)
 
-[Play or download the full-resolution MP4](docs/demo/project-demo.mp4)
+[Watch the demo on GitHub](https://github.com/theashgen/violens/blob/main/docs/demo/project-demo.mp4) · [Download the 1080p MP4](https://github.com/theashgen/violens/raw/refs/heads/main/docs/demo/project-demo.mp4)
+
+Recording: [`docs/demo/project-demo.mp4`](docs/demo/project-demo.mp4) (1920 × 1080, 30 fps, 37 seconds).
 
 ## Architecture
 
