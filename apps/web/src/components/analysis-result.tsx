@@ -42,7 +42,7 @@ export function AnalysisResult({
       aria-busy={busy}
       className="rounded-lg border bg-card"
     >
-      <div className="flex items-center justify-between border-b px-5 py-4">
+      <div className="flex items-center justify-between border-b px-4 py-3 sm:px-5 sm:py-4">
         <h2 id="analysis-title" className="text-sm font-semibold">
           Analysis
         </h2>
@@ -50,7 +50,7 @@ export function AnalysisResult({
           02 / OUTPUT
         </span>
       </div>
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <div
           role="status"
           aria-live="polite"
@@ -162,7 +162,7 @@ export function AnalysisResult({
         </dl>
         <Button
           type="button"
-          className="mt-5 w-full"
+          className="mt-5 w-full min-h-[44px] text-sm font-medium"
           disabled={disabled}
           onClick={onAnalyze}
         >

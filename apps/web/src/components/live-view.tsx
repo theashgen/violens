@@ -409,7 +409,7 @@ export function LiveView() {
                   type="button"
                   size="sm"
                   variant="outline"
-                  className="mt-3"
+                  className="mt-3 w-full sm:w-auto min-h-[38px]"
                   disabled={health !== "ready"}
                   onClick={connectWebcam}
                 >
@@ -435,13 +435,13 @@ export function LiveView() {
                   placeholder="rtsp://user:pass@camera-ip:554/stream"
                   autoComplete="off"
                   spellCheck={false}
-                  className="mt-2 h-9 w-full rounded-md border bg-transparent px-3 font-mono text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="mt-2 h-10 w-full rounded-md border bg-transparent px-3 font-mono text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
                 <Button
                   type="submit"
                   size="sm"
                   variant="outline"
-                  className="mt-3"
+                  className="mt-3 w-full sm:w-auto min-h-[38px]"
                   disabled={health !== "ready"}
                 >
                   Connect camera
@@ -459,7 +459,7 @@ export function LiveView() {
             </div>
           )}
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t bg-muted/30 px-5 py-4">
+        <div className="flex flex-col gap-3 border-t bg-muted/30 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
           <p className="text-xs text-muted-foreground">
             {phase === "streaming"
               ? "Frames are analyzed continuously in the background."
@@ -470,6 +470,7 @@ export function LiveView() {
               type="button"
               size="sm"
               variant="ghost"
+              className="w-full sm:w-auto min-h-[36px]"
               onClick={disconnect}
             >
               <X aria-hidden="true" />
@@ -483,7 +484,7 @@ export function LiveView() {
         aria-labelledby="live-status-title"
         className="rounded-lg border bg-card"
       >
-        <div className="flex items-center justify-between border-b px-5 py-4">
+        <div className="flex items-center justify-between border-b px-4 py-3 sm:px-5 sm:py-4">
           <h2 id="live-status-title" className="text-sm font-semibold">
             Live status
           </h2>
@@ -491,7 +492,7 @@ export function LiveView() {
             02 / OUTPUT
           </span>
         </div>
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
           <div
             role="status"
             aria-live="polite"

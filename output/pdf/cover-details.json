@@ -1,0 +1,28 @@
+{
+  "authors": [
+    {
+      "name": "Ashwin S",
+      "registration_number": "12308018",
+      "email": "theashgen06@gmail.com"
+    },
+    {
+      "name": "Prudhviraj K B",
+      "registration_number": "12307060",
+      "email": "prudhvirajkb3@gmail.com"
+    },
+    {
+      "name": "Pranav R",
+      "registration_number": "12306134",
+      "email": "pranavsandle@gmail.com"
+    }
+  ],
+  "supervisor": "Enjula Uchoi",
+  "degree": "BACHELOR OF TECHNOLOGY",
+  "specialization": "Artificial Intelligence and Machine Learning",
+  "school": "School of Computer Science and Engineering",
+  "university": "Lovely Professional University",
+  "location": "Punjab, India",
+  "submission_date": "November 2026",
+  "logo_source": "https://www.lpu.in/lpu-assets/images/media-kit/lpu-logo.jpg",
+  "logo_source_page": "https://www.lpu.in/LPUMedia/"
+}

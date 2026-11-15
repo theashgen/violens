@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="246.63779527559058" height="215" preserveAspectRatio="xMinYMin meet" viewBox="0 0 246 215" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="246.63779527559058" height="215"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-215)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="10" y="173" width="226.63779527559058" height="32" rx="3" ry="3" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,94%,96%); fill-rule: evenodd;"/>
+			<text x="77.5220976377953" y="191.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,382) scale(1,-1)">Offline: audit / split / train</text>
+			<text x="67.01249763779529" y="181.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,362) scale(1,-1)">Compatible MC3-18 checkpoint</text>
+			<rect x="10" y="119" width="100" height="32" rx="3" ry="3" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,94%,96%); fill-rule: evenodd;"/>
+			<text x="32.334" y="137.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,274) scale(1,-1)">Uploaded video</text>
+			<text x="26.657250000000005" y="127.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,254) scale(1,-1)">Uniform 16 frames</text>
+			<rect x="136.63779527559058" y="119" width="100.0" height="32" rx="3" ry="3" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,94%,96%); fill-rule: evenodd;"/>
+			<text x="159.21974527559058" y="137.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,274) scale(1,-1)">Camera capture</text>
+			<text x="150.63284527559057" y="127.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,254) scale(1,-1)">Recent time window</text>
+			<path d="M 123.318898,173 L 123.318898,98 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="123.3189 98, 125.2366 101.5103, 121.4012 101.5103" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<rect x="30" y="64" width="186.63779527559058" height="34" rx="3" ry="3" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,94%,96%); fill-rule: evenodd;"/>
+			<text x="73.5461976377953" y="83.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,166) scale(1,-1)">Shared spatial preprocessing</text>
+			<text x="61.953447637795286" y="73.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,146) scale(1,-1)">Shared model / serialized inference</text>
+			<path d="M 60,119 L 70,98 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="70 98, 70.22221 101.9938, 66.75937 100.3449" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<path d="M 186.637795,119 L 176.637795,98 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="176.6378 98, 179.8784 100.3449, 176.4156 101.9938" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<rect x="10" y="8" width="100" height="32" rx="3" ry="3" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,94%,96%); fill-rule: evenodd;"/>
+			<text x="30.88545" y="26.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,52) scale(1,-1)">Upload response</text>
+			<text x="26.8617" y="16.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,32) scale(1,-1)">Class + confidence</text>
+			<rect x="136.63779527559058" y="8" width="100.0" height="32" rx="3" ry="3" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(92%,94%,96%); fill-rule: evenodd;"/>
+			<text x="154.86539527559057" y="26.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,52) scale(1,-1)">Camera hysteresis</text>
+			<text x="153.6560952755906" y="16.0" style="font-family: Times-Roman; font-size: 8.7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,32) scale(1,-1)">State / active event</text>
+			<path d="M 70,64 L 60,40 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="60 40, 63.12031 42.50273, 59.57994 43.97788" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<path d="M 176.637795,64 L 186.637795,40 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 0.8;"/>
+			<polygon points="186.6378 40, 187.0579 43.97788, 183.5175 42.50273" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+		</g>
+	</g>
+</svg>

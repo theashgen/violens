@@ -190,7 +190,7 @@ export function AnalysisWorkspace() {
 
   return (
     <>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="mb-4 flex flex-col gap-2 text-xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <span className="h-4 w-0.5 bg-primary" aria-hidden="true" />
           <span className="font-medium">Single-video analysis</span>
@@ -204,11 +204,11 @@ export function AnalysisWorkspace() {
               health === "ready" ? "bg-primary" : "bg-muted-foreground",
             )}
           />
-          <span>{statuses[health]}</span>
+          <span className="font-medium">{statuses[health]}</span>
           {(health === "offline" || health === "unavailable") && (
             <button
               type="button"
-              className="ml-1 underline underline-offset-4"
+              className="ml-1 py-0.5 underline underline-offset-4"
               onClick={() => {
                 setHealth("checking");
                 setHealthAttempt((value) => value + 1);
@@ -319,7 +319,7 @@ export function AnalysisWorkspace() {
                   </p>
                   <Button
                     type="button"
-                    className="mt-5"
+                    className="mt-4 sm:mt-5 min-h-[40px] px-5"
                     variant="outline"
                     onClick={() => input.current?.click()}
                   >
@@ -334,7 +334,7 @@ export function AnalysisWorkspace() {
               )}
             </div>
             {file ? (
-              <div className="mt-4 flex min-w-0 items-start justify-between gap-3">
+              <div className="mt-4 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium" title={file.name}>
                     {file.name}
@@ -349,6 +349,7 @@ export function AnalysisWorkspace() {
                   type="button"
                   variant="ghost"
                   size="sm"
+                  className="self-end sm:self-auto min-h-[36px]"
                   disabled={busy}
                   onClick={() => choose(null)}
                 >
@@ -360,7 +361,7 @@ export function AnalysisWorkspace() {
               <p className="mt-4 text-xs leading-5 text-muted-foreground">
                 MP4, AVI, MOV, MKV, WebM <span aria-hidden="true">·</span> Up to
                 100 MiB and 2 minutes
-                <br />
+                <br className="hidden sm:inline" />{" "}
                 MP4 with H.264 is recommended for browser preview.
               </p>
             )}
@@ -378,7 +379,7 @@ export function AnalysisWorkspace() {
               </div>
             )}
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t bg-muted/30 px-5 py-4">
+          <div className="flex flex-col gap-3 border-t bg-muted/30 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
             <p className="text-xs text-muted-foreground">
               {file
                 ? "Video is sent only when you run analysis."
@@ -389,6 +390,7 @@ export function AnalysisWorkspace() {
                 type="button"
                 size="sm"
                 variant="outline"
+                className="w-full sm:w-auto min-h-[36px]"
                 disabled={busy}
                 onClick={() => input.current?.click()}
               >

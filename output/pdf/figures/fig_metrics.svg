@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="246.63779527559058" height="185" preserveAspectRatio="xMinYMin meet" viewBox="0 0 246 185" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="246.63779527559058" height="185"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-185)" style="clip-path: url(#clip)">
+		<g transform="">
+			<path d="M 49,33 L 49,161 Z" style="stroke: rgb(86%,86%,86%); stroke-linecap: butt; stroke-width: 0.4;"/>
+			<text x="47.25" y="20" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,40) scale(1,-1)">0</text>
+			<path d="M 90.159449,33 L 90.159449,161 Z" style="stroke: rgb(86%,86%,86%); stroke-linecap: butt; stroke-width: 0.4;"/>
+			<text x="86.65944881889764" y="20" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,40) scale(1,-1)">25</text>
+			<path d="M 131.318898,33 L 131.318898,161 Z" style="stroke: rgb(86%,86%,86%); stroke-linecap: butt; stroke-width: 0.4;"/>
+			<text x="127.81889763779529" y="20" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,40) scale(1,-1)">50</text>
+			<path d="M 172.478346,33 L 172.478346,161 Z" style="stroke: rgb(86%,86%,86%); stroke-linecap: butt; stroke-width: 0.4;"/>
+			<text x="168.97834645669292" y="20" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,40) scale(1,-1)">75</text>
+			<path d="M 213.637795,33 L 213.637795,161 Z" style="stroke: rgb(86%,86%,86%); stroke-linecap: butt; stroke-width: 0.4;"/>
+			<text x="208.38779527559058" y="20" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,40) scale(1,-1)">100</text>
+			<text x="13.352" y="144" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,288) scale(1,-1)">Accuracy</text>
+			<rect x="49" y="149" width="146.80554639370084" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,75%,79%); fill-rule: evenodd;"/>
+			<text x="198.80554639370084" y="149.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,299) scale(1,-1)">89.2</text>
+			<rect x="49" y="138" width="152.87788219685044" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<text x="204.87788219685044" y="138.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,277) scale(1,-1)">92.9</text>
+			<text x="14.224" y="114" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,228) scale(1,-1)">Precision</text>
+			<rect x="49" y="119" width="136.1561152440945" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,75%,79%); fill-rule: evenodd;"/>
+			<text x="188.1561152440945" y="119.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,239) scale(1,-1)">82.7</text>
+			<rect x="49" y="108" width="145.12508841732287" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<text x="197.12508841732287" y="108.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,217) scale(1,-1)">88.1</text>
+			<text x="23.56" y="84" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,168) scale(1,-1)">Recall</text>
+			<rect x="49" y="89" width="162.97478890551184" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,75%,79%); fill-rule: evenodd;"/>
+			<text x="214.97478890551184" y="89.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,179) scale(1,-1)">99.0</text>
+			<rect x="49" y="78" width="163.2658685275591" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<text x="215.2658685275591" y="78.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,157) scale(1,-1)">99.2</text>
+			<text x="35.552" y="54" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,108) scale(1,-1)">F1</text>
+			<rect x="49" y="59" width="148.36318457480317" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,75%,79%); fill-rule: evenodd;"/>
+			<text x="200.36318457480317" y="59.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,119) scale(1,-1)">90.1</text>
+			<rect x="49" y="48" width="153.66188737795278" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<text x="205.66188737795278" y="48.5" style="font-family: Times-Roman; font-size: 6.8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,97) scale(1,-1)">93.3</text>
+			<rect x="48" y="174" width="8" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(70%,75%,79%); fill-rule: evenodd;"/>
+			<text x="60" y="174" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,348) scale(1,-1)">Validation (n=397)</text>
+			<rect x="151" y="174" width="8" height="7" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<text x="163" y="174" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,348) scale(1,-1)">Test (n=238)</text>
+			<text x="106.77489763779529" y="6" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,12) scale(1,-1)">Percentage (%)</text>
+		</g>
+	</g>
+</svg>

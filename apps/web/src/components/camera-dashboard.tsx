@@ -102,32 +102,41 @@ export function CameraDashboard() {
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not add camera."); }
   }
 
-  return <main className="mx-auto max-w-6xl space-y-7 px-5 py-10 sm:px-8">
-    <header><p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Continuous monitoring</p>
-      <h1 className="mt-2 text-3xl font-semibold">Camera dashboard</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Scores are uncalibrated model outputs, not probabilities of harm.</p></header>
-    <form onSubmit={add} className="grid gap-3 rounded-lg border bg-card p-4 sm:grid-cols-[1fr_2fr_auto]">
-      <input aria-label="Camera ID" required value={id} onChange={e => setId(e.target.value)} placeholder="Camera ID" className="rounded-md border bg-background px-3 py-2 text-sm" />
-      <input aria-label="Stream URL" required value={url} onChange={e => setUrl(e.target.value)} placeholder="rtsp://… or http://…" className="rounded-md border bg-background px-3 py-2 text-sm" />
-      <button className="rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">Add camera</button>
+  return <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 sm:space-y-7 sm:px-8 sm:py-10">
+    <header>
+      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Continuous monitoring</p>
+      <h1 className="mt-1 text-2xl font-semibold sm:mt-2 sm:text-3xl">Camera dashboard</h1>
+      <p className="mt-1.5 text-xs text-muted-foreground sm:mt-2 sm:text-sm">Scores are uncalibrated model outputs, not probabilities of harm.</p>
+    </header>
+    <form onSubmit={add} className="flex flex-col gap-3 rounded-lg border bg-card p-4 sm:grid sm:grid-cols-[1fr_2fr_auto]">
+      <input aria-label="Camera ID" required value={id} onChange={e => setId(e.target.value)} placeholder="Camera ID" className="min-h-[42px] rounded-md border bg-background px-3 py-2 text-sm" />
+      <input aria-label="Stream URL" required value={url} onChange={e => setUrl(e.target.value)} placeholder="rtsp://… or http://…" className="min-h-[42px] rounded-md border bg-background px-3 py-2 text-sm font-mono text-xs sm:text-sm" />
+      <button className="min-h-[42px] rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">Add camera</button>
     </form>
-    <p role="status" className="text-sm">{connected ? "Live updates connected" : "Live updates disconnected — reconnecting. Camera statuses below may be stale."}</p>
-    {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
-    {!cameras.length && <p className="rounded-lg border p-8 text-center text-sm text-muted-foreground">No cameras configured. Add a stream above or configure CAMERAS_JSON before starting the API.</p>}
+    <p role="status" className="text-xs sm:text-sm">{connected ? "Live updates connected" : "Live updates disconnected — reconnecting. Camera statuses below may be stale."}</p>
+    {error && <p role="alert" className="text-xs text-red-700 sm:text-sm">{error}</p>}
+    {!cameras.length && <p className="rounded-lg border p-6 text-center text-xs text-muted-foreground sm:p-8 sm:text-sm">No cameras configured. Add a stream above or configure CAMERAS_JSON before starting the API.</p>}
     <section aria-label="Camera statuses" className="grid gap-4 md:grid-cols-2">
-      {cameras.map(camera => <article key={camera.camera_id} className={`rounded-lg border bg-card p-5 ${camera.state === "VIOLENCE" ? "border-red-500 ring-1 ring-red-500" : ""}`}>
-        <div className="flex items-start justify-between gap-3"><div><h2 className="font-semibold">{camera.camera_name}</h2><p className="font-mono text-xs text-muted-foreground">{camera.camera_id}</p></div>
-          <span className={`rounded-full px-3 py-1 text-xs font-bold ${colors[camera.state] ?? colors.CONNECTING}`}>{camera.state}</span></div>
+      {cameras.map(camera => <article key={camera.camera_id} className={`rounded-lg border bg-card p-4 sm:p-5 ${camera.state === "VIOLENCE" ? "border-red-500 ring-1 ring-red-500" : ""}`}>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="truncate font-semibold">{camera.camera_name}</h2>
+            <p className="font-mono text-xs text-muted-foreground">{camera.camera_id}</p>
+          </div>
+          <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${colors[camera.state] ?? colors.CONNECTING}`}>{camera.state}</span>
+        </div>
         <CameraPreview camera={camera} />
         {camera.state === "BUFFERING" && <p className="mt-2 text-xs text-muted-foreground">Camera connected · collecting a temporal window for analysis…</p>}
-        {camera.state === "VIOLENCE" && <p className="mt-4 text-lg font-bold text-red-700">VIOLENCE DETECTED</p>}
-        <dl className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><dt className="text-muted-foreground">Violence score</dt><dd className="font-mono">{camera.violence_score?.toFixed(3) ?? "—"}</dd></div>
-          <div><dt className="text-muted-foreground">Connection</dt><dd>{camera.connection_status}</dd></div>
-          <div><dt className="text-muted-foreground">Inference latency</dt><dd>{camera.inference_latency_ms == null ? "—" : `${camera.inference_latency_ms} ms`}</dd></div>
-          <div><dt className="text-muted-foreground">Dropped windows</dt><dd>{camera.dropped_windows}</dd></div></dl>
+        {camera.state === "VIOLENCE" && <p className="mt-4 text-base font-bold text-red-700 sm:text-lg">VIOLENCE DETECTED</p>}
+        <dl className="mt-4 grid grid-cols-2 gap-2.5 text-xs sm:gap-3 sm:text-sm">
+          <div><dt className="text-muted-foreground">Violence score</dt><dd className="font-mono font-medium">{camera.violence_score?.toFixed(3) ?? "—"}</dd></div>
+          <div><dt className="text-muted-foreground">Connection</dt><dd className="font-medium">{camera.connection_status}</dd></div>
+          <div><dt className="text-muted-foreground">Inference latency</dt><dd className="font-medium">{camera.inference_latency_ms == null ? "—" : `${camera.inference_latency_ms} ms`}</dd></div>
+          <div><dt className="text-muted-foreground">Dropped windows</dt><dd className="font-medium">{camera.dropped_windows}</dd></div>
+        </dl>
         {camera.violence_event && <p className="mt-3 text-xs text-red-700">Event since {new Date(camera.violence_event.event_start).toLocaleString()} · peak score {camera.violence_event.highest_score.toFixed(3)}</p>}
         {camera.error && <p className="mt-2 text-xs text-orange-700">{camera.error}</p>}
-        <button onClick={() => fetch(`${API}/api/v1/cameras/${encodeURIComponent(camera.camera_id)}`, { method: "DELETE" })} className="mt-4 text-xs underline">Remove camera</button>
+        <button onClick={() => fetch(`${API}/api/v1/cameras/${encodeURIComponent(camera.camera_id)}`, { method: "DELETE" })} className="mt-4 py-1 text-xs underline text-muted-foreground hover:text-destructive">Remove camera</button>
       </article>)}
     </section>
   </main>;

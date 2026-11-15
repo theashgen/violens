@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="246.63779527559058" height="200" preserveAspectRatio="xMinYMin meet" viewBox="0 0 246 200" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="246.63779527559058" height="200"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-200)" style="clip-path: url(#clip)">
+		<g transform="">
+			<text x="106.38" y="188" style="font-family: Times-Bold; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,376) scale(1,-1)">Predicted class</text>
+			<text x="80.728" y="171" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,342) scale(1,-1)">Non-violence</text>
+			<text x="153.06" y="171" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,342) scale(1,-1)">Violence</text>
+			<rect x="70" y="90" width="65" height="65" style="stroke: rgb(100%,100%,100%); stroke-linecap: butt; stroke-width: 2; fill: rgb(78%,86%,90%); fill-rule: evenodd;"/>
+			<text x="90.5" y="118.5" style="font-family: Times-Bold; font-size: 16px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,237) scale(1,-1)">102</text>
+			<rect x="135" y="90" width="65" height="65" style="stroke: rgb(100%,100%,100%); stroke-linecap: butt; stroke-width: 2; fill: rgb(94%,88%,84%); fill-rule: evenodd;"/>
+			<text x="159.5" y="118.5" style="font-family: Times-Bold; font-size: 16px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,237) scale(1,-1)">16</text>
+			<rect x="70" y="25" width="65" height="65" style="stroke: rgb(100%,100%,100%); stroke-linecap: butt; stroke-width: 2; fill: rgb(94%,88%,84%); fill-rule: evenodd;"/>
+			<text x="98.5" y="53.5" style="font-family: Times-Bold; font-size: 16px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,107) scale(1,-1)">1</text>
+			<rect x="135" y="25" width="65" height="65" style="stroke: rgb(100%,100%,100%); stroke-linecap: butt; stroke-width: 2; fill: rgb(78%,86%,90%); fill-rule: evenodd;"/>
+			<text x="155.5" y="53.5" style="font-family: Times-Bold; font-size: 16px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,107) scale(1,-1)">119</text>
+			<text x="20.455999999999996" y="119.5" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,239) scale(1,-1)">Non-violence</text>
+			<text x="35.120000000000005" y="54.5" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,109) scale(1,-1)">Violence</text>
+			<text x="9" y="91" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,182) scale(1,-1)">Actual</text>
+			<text x="9" y="81" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,162) scale(1,-1)">class</text>
+			<text x="80.872" y="9" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,18) scale(1,-1)">Rows: actual | columns: predicted</text>
+		</g>
+	</g>
+</svg>
