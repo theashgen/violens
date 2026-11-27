@@ -12,6 +12,9 @@ from reportlab.graphics import renderSVG
 ROOT=Path(__file__).resolve().parent
 TEXT=ROOT/'violence-detection-research-paper.md'
 PDF=ROOT/'violence-detection-research-paper.pdf'
+REVIEW=json.loads((ROOT/'review-results.json').read_text())
+MC_RUN=REVIEW['models']['mc3']['runs'][1]
+MONITOR=REVIEW['monitor']['runs']
 FIG=ROOT/'figures'; FIG.mkdir(exist_ok=True)
 W,H=A4
 M=42
@@ -19,7 +22,7 @@ GAP=18
 CW=(W-2*M-GAP)/2
 INK=colors.HexColor('#17324a'); BLUE=colors.HexColor('#315d79'); LIGHT=colors.HexColor('#edf2f5')
 styles={
- 'body':ParagraphStyle('body',fontName='Times-Roman',fontSize=10.5,leading=12.7,alignment=TA_JUSTIFY,spaceAfter=5.5,splitLongWords=True),
+ 'body':ParagraphStyle('body',fontName='Times-Roman',fontSize=11.5,leading=14,alignment=TA_JUSTIFY,spaceAfter=5.5,splitLongWords=True),
  'h1':ParagraphStyle('h1',fontName='Times-Bold',fontSize=11.5,leading=13.5,alignment=TA_CENTER,spaceBefore=6,spaceAfter=8,keepWithNext=True),
  'h2':ParagraphStyle('h2',fontName='Times-Italic',fontSize=10.7,leading=13,spaceBefore=5,spaceAfter=5,keepWithNext=True),
  'caption':ParagraphStyle('caption',fontName='Times-Roman',fontSize=9,leading=10.5,alignment=TA_LEFT,spaceAfter=8),
@@ -78,7 +81,7 @@ def confusion():
  x0=70;y0=25;s=65
  label(d,x0+s,188,'Predicted class',9,bold=True)
  label(d,x0+s/2,171,'Non-violence',8);label(d,x0+1.5*s,171,'Violence',8)
- for r,row in enumerate([[102,16],[1,119]]):
+ for r,row in enumerate(MC_RUN["test_default"]["confusion"]):
   for c,v in enumerate(row):
    x=x0+c*s;y=y0+(1-r)*s
    fill=colors.HexColor('#c9dce7') if r==c else colors.HexColor('#f2e2d8')
@@ -91,22 +94,34 @@ def confusion():
  return d
 
 def metrics():
- d=Drawing(CW,185)
- vals=[('Accuracy',89.1688,92.8571),('Precision',82.7004,88.1481),('Recall',98.9899,99.1667),('F1',90.1149,93.3333)]
- x0=49; maxw=CW-82
- for tick in [0,25,50,75,100]:
-  x=x0+maxw*tick/100
-  d.add(Line(x,33,x,161,strokeColor=colors.HexColor('#dddddd'),strokeWidth=.4))
-  label(d,x,20,str(tick),7)
- for i,(name,a,b) in enumerate(vals):
-  y=145-i*30
-  label(d,x0-5,y-1,name,8,anchor='end')
-  for offset,val,color in [(4,a,colors.HexColor('#b3c0ca')),(-7,b,BLUE)]:
-   d.add(Rect(x0,y+offset,maxw*val/100,7,strokeColor=None,fillColor=color))
-   label(d,x0+maxw*val/100+3,y+offset+.5,f'{val:.1f}',6.8,anchor='start')
- d.add(Rect(48,174,8,7,strokeColor=None,fillColor=colors.HexColor('#b3c0ca')));label(d,60,174,'Validation (n=397)',8,anchor='start')
- d.add(Rect(151,174,8,7,strokeColor=None,fillColor=BLUE));label(d,163,174,'Test (n=238)',8,anchor='start')
- label(d,x0+maxw/2,6,'Percentage (%)',8)
+ d = Drawing(CW, 160)
+ left, bottom, right, top = 32, 24, CW - 10, 126
+ series = []
+ for name, line_color in [('mc3', BLUE), ('resnet', colors.HexColor('#95704d'))]:
+  runs = REVIEW['models'][name]['runs']
+  for key in ('train_loss', 'val_loss'):
+   values = [sum(run['history'][i][key] for run in runs)/len(runs) for i in range(20)]
+   series.append((key, line_color, values))
+ max_loss = math.ceil(max(max(vals) for _, _, vals in series)*5)/5
+ for i in range(5):
+  y = bottom+(top-bottom)*i/4
+  d.add(Line(left,y,right,y,strokeColor=colors.HexColor('#dddfe2'),strokeWidth=.45))
+  label(d,left-4,y-2,f'{max_loss*i/4:.2f}',7,anchor='end')
+ for epoch in (1,5,10,15,20):
+  x = left+(right-left)*(epoch-1)/19
+  label(d,x,bottom-9,str(epoch),7)
+ for key,line_color,vals in series:
+  for i,(a,b) in enumerate(zip(vals, vals[1:])):
+   x1=left+(right-left)*i/19
+   x2=left+(right-left)*(i+1)/19
+   style = {'strokeDashArray': [2, 2]} if key == 'val_loss' else {}
+   d.add(Line(x1,bottom+a/max_loss*(top-bottom),x2,bottom+b/max_loss*(top-bottom),
+              strokeColor=line_color,strokeWidth=1.1,**style))
+ label(d,left,135,'Cross-entropy',8,anchor='start')
+ label(d,(left+right)/2,3,'Epoch',8)
+ label(d,left,151,'MC3-18',8,True,BLUE,anchor='start')
+ label(d,left+45,151,'ResNet-18',8,True,colors.HexColor('#95704d'),anchor='start')
+ label(d,right,151,'Solid: train  Dashed: validation',7,anchor='end')
  return d
 
 def table(caption,headers,rows,widths=None):
@@ -118,18 +133,59 @@ def table(caption,headers,rows,widths=None):
 figures={
  'FIG_ARCH':(architecture(),'Fig. 1. Implemented data paths. The temporal policies differ; checkpoint and spatial preprocessing are shared.'),
  'FIG_STATES':(states(),'Fig. 2. Simplified monitoring state logic. Threshold counts are defaults. Mid-range scores reset counters; inference failures use an ERROR state (not shown).'),
- 'FIG_CONFUSION':(confusion(),'Fig. 3. Test confusion matrix from the saved 238-clip evaluation. Violence is the positive class.'),
- 'FIG_METRICS':(metrics(),'Fig. 4. Recorded validation and test metrics for the same one-epoch checkpoint. The partitions differ; these bars are not a longitudinal improvement curve.')}
+ 'FIG_CONFUSION':(confusion(),'Fig. 3. Test confusion matrix for seed 42 at threshold 0.50. Violence is the positive class.'),
+ 'FIG_METRICS':(metrics(),'Fig. 4. Mean training and validation loss by epoch across three seeds for each backbone.')}
 for key,(drawing,_) in figures.items():renderSVG.drawToFile(drawing,str(FIG/(key.lower()+'.svg')))
 
 def special(key):
  if key in figures:
   d,cap=figures[key];return KeepTogether([d,p(cap,'caption')])
- if key=='TABLE_SPLITS':return table('TABLE I. FINAL RETAINED VIDEO PARTITIONS',['Split','Non-violence','Violence','Total'],[['Train',674,672,1346],['Validation',199,198,397],['Test',118,120,238],['Total',991,990,1981]],[CW*.24,CW*.27,CW*.24,CW*.25])
- if key=='TABLE_TRAINING':return table('TABLE II. RECORDED CHECKPOINT CONFIGURATION',['Setting','Recorded value'],[['Backbone','MC3-18 / Kinetics-400'],['Trainable layers','Linear classifier only'],['Completed epochs','1'],['Batch size / learning rate','4 / 0.001'],['Seed / frame count','42 / 16'],['Optimizer','AdamW'],['Selection criterion','Minimum validation loss'],['Training / validation clips','1,346 / 397']],[CW*.44,CW*.56])
- if key=='TABLE_API':return table('TABLE III. UPLOADED-VIDEO RESPONSE CONTRACT',['Status','Meaning'],[['200','Valid prediction returned'],['413','Upload exceeds size limit'],['415','Unsupported filename extension'],['422','Empty, corrupt, or over-limit video'],['429','Shared inference model busy'],['503','Trained checkpoint unavailable'],['500','Model execution failure']],[CW*.18,CW*.82])
- if key=='TABLE_RESULTS':return table('TABLE IV. PRIMARY HELD-OUT TEST RESULTS',['Metric','Value'],[['Test clips','238'],['Accuracy','92.86%'],['Precision (violence)','88.15%'],['Recall (violence)','99.17%'],['F1 (violence)','93.33%'],['Specificity (derived)','86.44%'],['Balanced accuracy (derived)','92.80%'],['Cross-entropy loss','0.2092']],[CW*.68,CW*.32])
- if key=='TABLE_PROVENANCE':return table('TABLE V. LOCAL EXPERIMENT EVIDENCE',['Artifact','Purpose'],[['rlvs-inspection.json','Decoded records and audit failures'],['rlvs-exclusions.csv','Five reviewed exclusions'],['splits.csv','1,981 retained assignments'],['best.pt','Epoch-1 model and metadata'],['training.json','One recorded epoch'],['test_metrics.json','238-clip primary evaluation']],[CW*.46,CW*.54])
+ if key == 'TABLE_SPLITS':
+  splits = REVIEW['audit']['partitions']
+  return table('TABLE I. GROUPED VIDEO PARTITIONS', ['Set', 'Non-violence', 'Violence', 'Groups'],
+               [[name.title(), *splits[name]['class_counts'], splits[name]['groups']]
+                for name in ('train', 'val', 'test')])
+ if key == 'TABLE_TRAINING':
+  return table('TABLE II. TRAINING AND SELECTION', ['Setting', 'Value'],
+               [['Backbones', 'Frozen MC3-18 and ResNet-18'], ['Trainable layer', 'Linear classifier'],
+                ['Epochs per seed', 20], ['Batch size / rate', '32 / 0.001'],
+                ['Seeds', '41, 42, 43'], ['Optimizer', 'AdamW'],
+                ['Epoch selection', 'Lowest validation loss']])
+ if key == 'TABLE_MONITOR':
+  return table('TABLE III. CONCURRENT REPLAY PERFORMANCE', ['Cams', 'Done / scheduled', 'Win/s', 'p50 / p95 ms', 'Replaced'],
+               [[r['cameras'], f"{r['completed']} / {r['scheduled']}",
+                 f"{r['throughput_per_second']:.2f}",
+                 f"{r['latency_p50_ms']:.0f} / {r['latency_p95_ms']:.0f}",
+                 f"{r['replaced_windows']} ({r['replaced_windows']/r['scheduled']:.1%})"] for r in MONITOR],
+               [CW*.16,CW*.22,CW*.19,CW*.21,CW*.22])
+ if key == 'TABLE_EVENTS':
+  return table('TABLE IV. REPLAY ALERT MEASURES', ['Cameras', 'Matched / events', 'Mean delay (s)', 'False alerts per cam-h'],
+               [[r['cameras'], f"{r['events_matched']} / {r['events']}",
+                 f"{r['delay_mean_seconds']:.2f}" if r['delay_mean_seconds'] is not None else 'N/A',
+                 f"{r['false_alerts_per_camera_hour']:.1f}"] for r in MONITOR])
+ if key == 'TABLE_RESULTS':
+  summary = [REVIEW['models'][name]['summary']['test_default'] for name in ('mc3', 'resnet')]
+  def result_cell(values):
+   return f"{100*values['mean']:.2f} +/- {100*values['sd']:.2f}"
+  return table('TABLE V. TEST MEAN +/- SAMPLE SD (%) AT 0.50', ['Metric', 'MC3-18', 'ResNet-18'],
+               [[metric.title(),*(result_cell(s[metric]) for s in summary)]
+                for metric in ('accuracy', 'precision', 'recall', 'f1')])
+ if key == 'TABLE_THRESHOLDS':
+  chosen = MC_RUN['validation_selected']['threshold']
+  default_val = next(r for r in MC_RUN['validation_sweep'] if r['threshold'] == .50)
+  rows = [('Val', .5, default_val), ('Val', chosen, MC_RUN['validation_selected']),
+          ('Test', .5, MC_RUN['test_default']), ('Test', chosen, MC_RUN['test_selected'])]
+  return table('TABLE VI. VALIDATION-SELECTED CLIP RULE (SEED 42)', ['Set', 'Cutoff', 'Precision', 'Recall', 'F1'],
+               [[split, f'{cutoff:.2f}', *(f'{row[k]:.2%}' for k in ('precision','recall','f1'))]
+                for split,cutoff,row in rows])
+ if key == 'TABLE_PROVENANCE':
+  return table('TABLE VII. EXPERIMENT RECORDS',['Artifact','Contents'],
+               [['grouped-splits.csv','Paths, classes, split and group IDs'],
+                ['group-audit.json','Visual links and excluded conflicts'],
+                ['experiments.json','Loss, validation sweeps and test scores'],
+                ['review-labels.json','Single-reviewer clip labels'],
+                ['monitor-results.json','Worker timings and replay alerts'],
+                ['review-results.json','Compact data for this paper']],[CW*.44,CW*.56])
  raise ValueError(key)
 
 def flows(text):
@@ -219,8 +275,16 @@ centered(cover['specialization'],497,'Times-Bold',14)
 centered('By',461,'Times-Italic',12)
 for i,author in enumerate(cover['authors']):
  x=110+i*(W-220)/2
- for value,y,font,size in [(author['name'],437,'Times-Bold',14),('Reg. No. '+author['registration_number'],418,'Times-Roman',11),(author['email'],401,'Times-Roman',10)]:
-  c.setFont(font,size);c.drawCentredString(x,y,value)
+ registration = f"Reg. No. {author['registration_number']}"
+ roll = f"Roll No. {author['roll_number']}"
+ for value, y, font, size in [
+  (author['name'], 437, 'Times-Bold', 14),
+  (registration, 418, 'Times-Roman', 11),
+  (roll, 403, 'Times-Roman', 11),
+  (author['email'], 388, 'Times-Roman', 10),
+ ]:
+  c.setFont(font, size)
+  c.drawCentredString(x, y, value)
 if cover['supervisor']:
  centered('Under the guidance of',363,'Times-Italic',12)
  centered(cover['supervisor'],338,'Times-Bold',14)

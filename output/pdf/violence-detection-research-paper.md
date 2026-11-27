@@ -1,326 +1,276 @@
 # Violence Detection in Surveillance Videos Using Transfer Learning and Continuous Multi-Camera Monitoring
 
-Ashwin S | Registration No. 12308018 | theashgen06@gmail.com
+Ashwin Sathiya Moorthy | Registration No. 12308018 | Roll No. 46 | theashgen06@gmail.com
 
-Prudhviraj K B | Registration No. 12307060 | prudhvirajkb3@gmail.com
+Prudhviraj K B | Registration No. 12307060 | Roll No. 17 | prudhvirajkb3@gmail.com
 
-Pranav R | Registration No. 12306134 | pranavsandle@gmail.com
+Pranav R | Registration No. 12306134 | Roll No. 36 | pranavsandle@gmail.com
 B.Tech in Artificial Intelligence and Machine Learning
 Lovely Professional University, Punjab, India
 
 ## Abstract
 
-Automated video analysis can help operators review large volumes of surveillance footage, but a video classifier alone does not constitute a dependable monitoring system. This paper presents an implemented research prototype combining a transfer-learned mixed-convolution network, an audited dataset pipeline, uploaded-video inference, and continuous multi-camera monitoring. The classifier adapts Kinetics-400-pretrained MC3-18 features to two classes while freezing the backbone. A public RLVS collection containing 2,000 videos is inspected for decoding failures, excessive duration, exact duplicates, and label conflicts. Reviewed exclusions and deduplication yield 1,346 training, 397 validation, and 238 test clips. The available checkpoint records one training epoch and achieves 92.86% accuracy, 88.15% precision, 99.17% recall, and 93.33% F1 on the held-out test clips. Continuous monitoring uses bounded timestamped buffers, overlapping temporal windows, serialized inference, and per-camera hysteresis, with a Next.js interface backed by FastAPI. These engineering capabilities are distinguished from the measured video-level experiment: neither event-level surveillance performance nor camera throughput has been established. Related-source leakage also remains unverified because the supplied filenames lack trusted source identities. The principal contribution is an inspectable end-to-end baseline with traceable results and explicit operational limits, rather than a novel architecture or a deployment-ready safety system.
+We evaluated violence classification on the RLVS video collection and measured the prototype's continuous monitoring workers in a paced replay benchmark. A frame-based perceptual hash screen and file hashes grouped visually related footage before splitting. We trained linear heads on frozen MC3-18 and frame-averaged ResNet-18 features for 20 epochs with three seeds. On 397 grouped test clips, mean accuracy at a fixed 0.50 threshold was 96.73% for MC3-18 and 95.97% for ResNet-18. We chose a second clip threshold on validation clips and reported its test results separately. A review of sampled frames from 24 clips identified 9 ambiguous cases and 0 clear folder-label disagreements. The four-stream replay completed 130 scheduled windows and matched six of eight inserted events. The archive lacks original-source identifiers, and the edited replays offer limited negative exposure. The monitoring results describe a local prototype under controlled conditions.
 
 **Keywords:** violence detection; video classification; MC3-18; transfer learning; RLVS; temporal windows; surveillance monitoring.
 
 ## I Introduction
 
-Surveillance applications produce more footage than a person can consistently examine in real time. A screening model can prioritize clips for review, provided its output is treated as uncertain evidence about visual content. Violence recognition is particularly difficult because similar motion may occur in sports, play, crowd activity, or physical assistance. Camera viewpoint, occlusion, scene context, and video compression can change the appearance of the same action. A useful research system must therefore make its evaluation scope and failure behavior as visible as its predictions.
+A person watching several surveillance feeds can miss short incidents, especially when the feeds compete for attention. A classifier can flag footage for review. The difficult cases are often ones in which ordinary activity resembles violence. A collision during a game, a crowded scene, or someone helping another person stand up can look different depending on the camera angle, what is occluded, and how much detail survives compression.
 
-This project investigates a practical baseline: can a pretrained video representation support binary violence classification while remaining accessible through a working local application? The implemented system accepts uploaded videos, supports a browser webcam or network camera in a diagnostic mode, and provides a separate continuous multi-camera dashboard. All application predictions depend on a compatible trained checkpoint. There is no random-weight fallback and no training endpoint exposed through the interface.
+We set out to measure how well a pretrained video model classifies complete RLVS clips and to see what it takes to use that same model in a working local application. The upload view returns one prediction per video. A diagnostic view accepts a browser webcam or network camera. A third view monitors multiple cameras continuously. All three use a compatible trained checkpoint. If the checkpoint is missing, prediction is unavailable.
 
-The study addresses three questions. First, what video-level classification performance is supported by the available saved experiment? Second, how can training and application inference share a well-defined preprocessing contract? Third, what additional mechanisms are needed to turn intermittent model predictions into bounded, inspectable camera states? These questions connect model evaluation with the engineering constraints of streaming inputs without equating the two.
+The offline workflow records which files were excluded, how clips were split, and which checkpoint produced the reported scores. Training and upload inference use the same decoder and preprocessing. For the camera monitor, we added a windowing policy and per-camera state rules so the dashboard can keep updating even when several feeds share the model.
 
-The contributions are an audited manifest-based data workflow; a frozen-backbone MC3-18 baseline with checkpoint provenance; a shared decoding and preprocessing path; an API and three application views; and a monitoring design using recent windows and hysteresis. The architecture combines established methods. The reported classification result is local and provisional, and no state-of-the-art comparison is claimed.
-
-The practical motivation is not limited to model accuracy. A browser may send a valid container with a codec it cannot preview, a camera may disconnect during a prediction, or concurrent requests may compete for the same accelerator. These cases can produce misleading displays unless the service explicitly tracks availability, source state, and the meaning of a score. The project treats these as first-class requirements while keeping the statistical evaluation restricted to labeled clips.
-
-The remainder of the paper reviews related methods, documents the dataset audit, explains the representation and training protocol, and describes the monitoring and application layers. It then reports the saved experiment, interprets uncertainty and error asymmetry, and identifies the evidence required for stronger surveillance claims.
+The application also has to handle cases that clip accuracy cannot describe. A browser may be unable to preview a clip the server can decode. A camera can disconnect while an inference request is running. Several feeds may ask for predictions faster than the model can serve them. The implementation gives each of these cases a visible outcome. We measured classification on grouped clips and measured worker performance and alerts on paced replays.
 
 <!-- page -->
 ## II Related work and research positioning
 
 ### A. Residual and spatiotemporal representations
 
-Residual learning introduces shortcut connections that support the optimization of deep visual networks [1]. For video, spatial appearance and temporal evolution must both be represented. Tran et al. study full three-dimensional, mixed, and factorized spatiotemporal convolutions within residual architectures [2]. Their mixed-convolution formulation motivates the MC3-18 backbone selected here. The present work uses an existing implementation rather than designing new residual blocks or a new temporal operator.
+He et al. introduced shortcut connections to ease optimization in deep visual networks [1]. Video models also need to account for how the picture changes between frames. Tran et al. compared full 3D convolutions, mixed 3D and 2D convolutions, and factorized spatiotemporal convolutions in residual networks [2]. We used their mixed-convolution design as implemented by torchvision's MC3-18.
 
-The model begins with Kinetics-400 weights [3,4]. Such pretraining provides a general action representation, but does not by itself define a violence detector. The original classification head is replaced and the new two-class head is fitted to the local dataset. The distinction matters: the provenance of pretrained features and the evidence for the target classification task are separate components of the experiment.
+The starting weights were trained on Kinetics-400 for human action recognition [3,4]. We reused that network's representation and replaced its original classifier with two outputs. The new head learned the difference between the violence and non-violence labels in our data. The RLVS evaluation therefore concerns the adapted model on our partitions.
 
 ### B. Violence datasets and protocol differences
 
-Cheng et al. introduce RWF-2000 as a surveillance-oriented violence dataset and describe a Flow Gated Network [5]. Their work illustrates why camera-specific material is relevant to this application. However, this paper evaluates the RLVS collection extracted from a public combined archive [6]; it does not evaluate RWF-2000. Published scores obtained on another dataset, split, or sampling protocol are not used as numerical competitors to the local result.
+Cheng et al. introduced RWF-2000 as a surveillance video dataset and proposed a Flow Gated Network [5]. Our archive contains more than one collection, and our experiment used its RLVS portion [6]. The two datasets have different footage and evaluation protocols. We use earlier work to explain model choices and report our results for the audited RLVS subset.
 
-A dataset name alone is insufficient to establish comparability. A mirror may contain several collections, retain nonstandard folder assignments, or include byte-identical copies under different names. Here, the archive contents are inspected before split creation. The report distinguishes the original discovered count, decodable records, reviewed exclusions, and final manifest membership. This makes the evaluated population narrower and more precise than an unqualified statement that the system was tested on all downloaded footage.
+Copies of the same video can appear in separate folders or under different filenames. If one copy enters training and another appears in validation or test, the result can reflect familiarity with that footage. We inspected the archive before assigning the test set and recorded the difference between the discovered files, decodable records, and retained clips.
 
 ### C. Optimization and interpretation of confidence
 
-The classifier head is optimized using AdamW, following the decoupled weight-decay formulation of Loshchilov and Hutter [7]. The code uses the framework optimizer directly; it does not implement a new optimization method. Freezing the backbone limits the number of trainable parameters and makes the experiment a feature-transfer baseline rather than full video-network fine-tuning.
+The training code uses AdamW, which applies weight decay separately from Adam's gradient update [7]. We optimize the classifier head while leaving the feature extractor fixed. This keeps the number of trainable parameters small.
 
-Guo et al. distinguish classification confidence from calibrated correctness likelihood [8]. This distinction is relevant when a model score appears in a monitoring interface. The project displays the softmax score but performs no probability calibration study. Consequently, a score of 0.9 must not be interpreted as a verified 90% chance that a real-world harmful event is occurring.
+Guo et al. discuss how a classifier's reported confidence can differ from how often it is correct [8]. The application displays the model's softmax score, which we did not calibrate. A softmax score of 0.9 gives the model's relative confidence. To interpret it as a 90% chance of a harmful event, we would need calibration data from the setting where the system is used.
 
 ### D. Position of the present study
 
-The study is best understood as a systems-oriented baseline with a small empirical evaluation. It contributes reproducible data handling and an application that uses the trained model, while retaining the limits of a single checkpoint and a single local split. There are no repeated-seed results, trained architecture comparisons, optical-flow experiments, or event-localization annotations in the available evidence.
-
-The engineering design emphasizes observable failure: missing checkpoints disable prediction, invalid uploads produce explicit errors, camera disconnects become states, and competing inference requests are controlled. These properties support development and review. They do not establish that an alert policy is accurate, fair, or acceptable in an operational setting. The following sections therefore report video classification and monitoring behavior as related but distinct aspects of the prototype.
-
-A useful comparison must hold more than the class names constant. Spatial resolution, number of frames, choice of best epoch, treatment of duplicates, and independence of the test population can all change a reported score. For this reason, the literature is used to explain design choices rather than construct a ranking across incompatible results. A controlled local comparison remains a future experiment.
-
-The same principle applies to the phrase real time. An interactive interface and continuous capture are observable software capabilities. Real-time performance additionally requires a specified input rate, latency budget, hardware environment, and overload policy. This paper documents the overload policy but reports no measured real-time performance guarantee.
+We compare two frozen backbones on the same grouped split using three training seeds. The 2D baseline averages frame embeddings and the 3D model integrates frame order within convolutional filters. We also run the monitoring workers at a fixed replay rate to observe throughput and alert behavior, leaving camera-network conditions and unedited event recordings for a field study.
 
 <!-- page -->
-## III Dataset audit and experimental partitions
+## III Dataset audit and grouped partitions
 
 ### A. Acquisition and label definition
 
-The project uses the RLVS portion of the public Video violence detection dataset archive [6]. Inspection discovers 2,000 videos, evenly divided between the two folder-defined classes. There are 1,951 MP4 files and 49 AVI files. Labels are derived from recognized class directories such as Fight and NonFight rather than from filename substrings. The ordered labels are 0 for non-violence and 1 for violence, and the same ordering is stored in each checkpoint.
+The RLVS subset of the public archive [6] contained 2,000 clips, 1,000 under each class folder. Three clips exceeded the 120-second limit and one had a corrupted frame. The audit retained 1,996 decodable files for fingerprinting. The folder label is class 0 for non-violence and class 1 for violence.
 
-The inspection pass decodes each supported video sequentially and records relative path, dimensions, frame count, approximate duration, frame rate, supplied split, class, and SHA-256. Four videos fail the baseline limits: three exceed 120 seconds and one contains a corrupted frame. The remaining 1,996 records contain 998 clips per class. Their recorded mean duration is approximately 4.91 seconds, with a minimum of 1.00 second and a maximum of 11.32 seconds. These statistics describe the usable records before final deduplication.
+### B. Perceptual duplicate detection
 
-### B. Duplicate and conflict handling
+We verified file hashes against the inspection records and sampled 12 evenly spaced frames from every usable clip. Each frame was resized to 32 by 32 grayscale pixels. We took the low-frequency 8 by 8 block of a two-dimensional discrete cosine transform, removed the DC coefficient, and compared the other 63 coefficients with their median to produce a binary fingerprint.
 
-The audit identifies 14 extra exact-duplicate copies among usable records. At least one duplicate pair has contradictory class labels, and three pairs cross the supplied training/validation boundary. The reviewed exclusion CSV removes both members of the contradictory pair and the training member of each of the three cross-boundary pairs. Validation membership is therefore preserved for those reviewed duplicate pairs. Same-split duplicates retain one representative.
+We compared all clip pairs. A pair links when at least four distinct samples in each clip have near matches and at least four matches line up under a single temporal offset. Each matching pair of frames differs by no more than eight bits. The offset allows some tolerance for trimming. We also joined exact SHA-256 matches and took connected components so linked clips always travel together. The screen found 285 links between byte-distinct files and 96 components with more than one file before exclusions. These are candidate visual relationships. A spot check of eight linked pairs found visually related scenes, including segments of the same sports broadcast and successive shots of the same setting. This check did not establish original recording identity.
 
-After reviewed exclusions and deduplication, 1,981 distinct retained clips remain. A SHA-256 match detects byte-identical files; it does not detect re-encoding, temporal overlap, a common original video, or repeated actors and locations. The use of hashes is a reproducibility safeguard with a specific scope, not proof of source independence.
+### C. Final partitions
 
-### C. Partition construction
-
-The supplied validation assignment is retained for the surviving clips. As the inspected RLVS collection has no supplied test partition, a seeded group shuffle reserves approximately 15% of the remaining training pool for a local test set. Seed 42 fixes the assignment. The final manifest contains path, label, split, SHA-256, and group. Every split must contain both classes, and path, hash, and group assignments are checked for split conflicts.
+We excluded 2 clips in groups whose folder labels disagreed. Within remaining groups, we kept one representative of each exact hash and retained other linked clips in the same group. We assigned groups with a stratified five-fold shuffle seeded at 42. One fold supplies validation, a second supplies the test set, and the other three supply training. We checked that every group belongs to only one partition.
 
 [[TABLE_SPLITS]]
 
-The main training routine verifies the hashes of training and validation files. Evaluation requires the exact manifest fingerprint recorded during training and verifies the test file hashes. This reduces accidental data changes after inspection. The test split is not loaded by the optimization loop and does not select the saved model.
+The new split has 1,981 clips in 1,803 groups. The original archive supplies no trusted camera, actor, or recording IDs. Visual groups are proxies for shared footage. The test split is independent of the training and validation splits by the recorded group IDs. Substantial crops, large time shifts, or repeated actors in visually different footage can still escape the screen.
 
-### D. Remaining leakage uncertainty
+### D. Label review
 
-Trusted source identifiers are unavailable in this mirror. The manifest therefore uses exact-file hashes as groups after an explicit acknowledgement that related-source leakage is unknown. The experiment cannot be described as camera-disjoint, actor-disjoint, or original-video-disjoint. A new review supplying complete source groups would strengthen the protocol and could change the resulting scores. The present partitions are a documented local research split, not an official RLVS benchmark protocol.
+We drew 12 test clips per folder class from distinct groups, using seed 932 and without consulting model scores. An AI assistant visually screened five chronological frames per clip and recorded a clear violence label, clear non-violence label, or an ambiguous result. The review found 0 clear folder-label disagreements and 9 ambiguous clips out of 24. The test metrics retain the supplied labels, so the review does not selectively remove difficult test clips. No second annotator was available to estimate inter-annotator agreement.
 
-### E. Audit accounting and reproducibility
-
-The final class totals are 991 non-violence and 990 violence clips. Their small difference follows the reviewed conflict handling and deduplication rather than deliberate class rebalancing. The final training set remains nearly balanced, so the reported run uses ordinary unweighted cross-entropy. The exclusion list contains explicit reasons, allowing a reviewer to distinguish a decoding failure from a label conflict or a cross-partition duplicate.
-
-Inspection and split generation are separate operations. This avoids silently rewriting the source archive or changing partitions whenever a model is trained. A corrected source-group mapping would be a new experimental protocol and should receive a new manifest and checkpoint fingerprint; it should not overwrite the identity of the existing result.
+The ambiguous set included occluded interactions, fast camera motion, and scenes whose context was unclear from five frames. Examples of clear negatives included field sports and a staged performance. These observations illustrate where folder labels can be difficult to verify, but give no estimate of annotator agreement.
 
 <!-- page -->
 ## IV Proposed system and video representation
 
 ### A. Components and data flow
 
-The implementation separates offline model development from online prediction. The ML package owns video decoding, dataset inspection, model construction, training, checkpoint loading, and evaluation. The FastAPI service owns upload validation and camera sessions. The Next.js application provides an upload workspace, a single-camera diagnostic view, and a multi-camera monitor. Training produces the artifact consumed by the service; browsing the application never modifies model parameters.
+The ML package decodes videos, inspects the dataset, trains the model, and evaluates checkpoints. At startup, the FastAPI service loads the checkpoint produced offline. It validates uploads and manages camera sessions. Next.js provides the views for video uploads, camera diagnostics, and continuous monitoring.
 
 [[FIG_ARCH]]
 
-The uploaded-video path returns a single prediction for the submitted clip. The continuous path repeatedly forms short windows from timestamped camera samples. Both use the same spatial transform and model class ordering, but their temporal sampling policies differ. This separation is intentional and is central to interpreting the results.
+An upload produces one prediction for the entire clip. Continuous monitoring scores short windows cut from timestamped camera samples. Both paths use the same spatial transform and class order.
 
 ### B. Bounded decoding and temporal sampling
 
-For uploaded videos, a first decode counts frames and checks corruption, duration, frame count, and resolution. A second decode retains only the uniformly selected frames. Interframe compression still requires decoding intervening frames, so the two-pass method limits retained memory without making decoding constant-time. Video limits are 120 seconds, 12,000 decoded frames, and a maximum frame area of 3840 by 2160 pixels. HTTP uploads also have a 100 MiB file limit.
+The upload path first decodes the video to count frames and check timestamps, corruption, and resolution. It then decodes the file again and retains only the selected frames. Interframe compression still requires the decoder to read the intervening frames. The two passes therefore reduce the amount of video held in memory. The limits are 120 seconds, 12,000 decoded frames, and a maximum frame area of 3840 by 2160 pixels. The HTTP upload limit is 100 MiB.
 
-For N decoded frames and T requested samples, the selected index is i(k) = floor(k(N-1)/(T-1)), for k from 0 to T-1. The recorded experiment uses T = 16. The first and last frames are included, and short videos repeat indices. Uniform coverage provides a simple whole-clip representation, although a brief incident can occur between selected frames and be missed.
+For N decoded frames and T requested samples, the selected index is i(k) = floor(k(N-1)/(T-1)), for k from 0 to T-1. We used T = 16. This includes the first and last frames and repeats indices when a clip is too short. The spacing grows with clip length, so a brief incident can fall between two samples.
 
 ### C. Spatial preprocessing and tensor layout
 
-The project applies the transform associated with the pretrained weight specification [4]: resize, center crop, rescaling, and normalization. The same implementation is shared by the offline dataset and uploaded-video inference. The resulting clip has shape [3,16,112,112] in float32 format; batching produces [B,3,16,112,112]. Continuous capture applies the spatial transform to incoming sampled frames before constructing its temporal tensor.
+We use the resize, center crop, rescaling, and normalization associated with the pretrained weights [4]. Training and uploaded-video inference use the same implementation. Each clip is a float32 tensor with shape [3,16,112,112]. A batch has shape [B,3,16,112,112]. Continuous capture applies the same spatial transform to incoming sampled frames before stacking them into a clip.
 
-Center cropping is deterministic and easy to reproduce, but it can remove relevant action near a frame boundary. Fixed-size resizing can also reduce detail for small or distant people. No person detector, tracker, pose estimator, region proposal, or camera-specific crop is implemented in the evaluated baseline.
+Center cropping can cut out an interaction near the edge of a frame. Resizing can also hide details of people far from the camera. The baseline uses a fixed crop and operates directly on RGB, without a person detector, tracker, pose estimator, or region proposal.
 
 ### D. Checkpoint contract
 
-A checkpoint records architecture, ordered classes, frame count, preprocessing identifier, weight provenance, selected epoch, validation metrics, training configuration, software versions, and manifest hash. Inference checks compatibility and constructs the model without downloading pretrained weights. An incompatible existing checkpoint fails startup; a missing file leaves the process available while reporting that the model is not ready. This makes model availability an explicit application state rather than an implicit assumption.
+The checkpoint records the architecture, class order, frame count, preprocessing identifier, original weights, selected epoch, validation metrics, training settings, software versions, and manifest hash. Inference verifies compatibility before restoring the model. The server needs no additional pretrained weight download. An incompatible checkpoint prevents startup. When the file is absent, the server starts and reports that the model is unavailable.
 
-Two types of temporal coverage should be distinguished. Whole-video sampling distributes a fixed number of observations across the submitted duration, so its effective temporal spacing changes with clip length. A four-second monitoring window instead targets a fixed temporal extent. Reusing spatial preprocessing prevents a normalization mismatch, but does not eliminate this difference in motion scale or the possibility that relevant actions fall between samples.
+The upload path spreads its samples across the length of the file. A monitoring window covers four seconds by default. This changes the amount of motion the same 16 frames can represent, even though each frame receives the same spatial transform.
 
 <!-- page -->
 ## V Model adaptation and training protocol
 
-### A. Binary classifier
+### A. MC3-18 and the comparison backbone
 
-The model is torchvision MC3-18 with a two-output linear classifier replacing the original head. Let f(X) denote the frozen representation of an input video tensor. The adapted logits are z = Wf(X) + b. For the model's 512-dimensional pooled representation, the trainable head contains 512 times 2 weights and 2 biases, or 1,026 parameters. The rest of the network supplies fixed pretrained features during the recorded run.
+The primary model is torchvision MC3-18 with Kinetics-400 weights and a new two-output linear classifier. Its pooled 512-dimensional vector becomes two logits through the 1,026-parameter head. Mixed spatiotemporal convolutions let MC3-18 use changes across frames before pooling.
 
-The predicted class is the index of the larger softmax value. For the violence class, s = exp(z1)/(exp(z0)+exp(z1)). The uploaded-video API returns the winning class and its score, so its confidence field is not always the violence score. The monitoring path explicitly reads the class-1 score before applying its thresholds. Keeping these semantics separate prevents confusion when comparing an upload result with a camera tile.
+For comparison, we added a frozen ImageNet-pretrained ResNet-18 [1]. It uses the same 16 frame indices, applies its pretrained image transform, and averages the 512-dimensional per-frame embeddings. We fit the same linear classifier on those averages. The comparison changes both temporal modeling and the pretraining dataset, so it measures the two complete pipelines. It cannot isolate a causal contribution from either difference.
 
-### B. Training objective and optimization
+### B. Optimization and model selection
 
-Training minimizes mean two-class cross-entropy. Only parameters whose names begin with the classifier prefix are passed to AdamW. The saved run uses batch size 4, learning rate 0.001, seed 42, zero data-loader workers, and four CPU threads. Weight decay is not explicitly overridden in the code; the optimizer therefore uses its library default. The experiment does not include class weighting, label smoothing, a learning-rate scheduler, or gradient accumulation.
+We computed each frozen embedding once and cached it. Both backbones stayed in evaluation mode, which fixes their batch-normalization statistics. Each head trained with AdamW and mean two-class cross-entropy, using batches of 32 and a learning rate of 0.001. Seeds 41, 42, and 43 changed the initial head weights and training order. All runs used the same grouped partitions.
 
-The code sets Python, NumPy, and PyTorch seeds, disables cuDNN benchmarking, and requests deterministic algorithms with warnings. This supports repeatability without guaranteeing identical results across device types and software versions. Automatic device selection prefers CUDA, then Apple MPS, then CPU. The checkpoint records the requested automatic setting, but does not retain an explicit resolved training-device field. No exact training-hardware or runtime claim is made here.
-
-### C. Frozen backbone behavior
-
-All backbone parameters have gradients disabled. The model is placed in evaluation mode during the frozen-feature training loop, which also prevents batch-normalization running statistics from changing. The linear classifier remains trainable in evaluation mode because its parameter gradients are still enabled. This detail is necessary to distinguish freezing weights alone from fully freezing the feature extractor's behavior.
-
-Each epoch is followed by validation over 397 clips. The checkpoint with the lowest validation loss is saved. The test partition is excluded from fitting and model selection. The current baseline configuration permits 20 epochs, but the checkpoint configuration and saved history both record only one completed epoch. The paper reports the one-epoch artifact and does not imply that a 20-epoch training schedule was completed.
+We set a 20-epoch budget for each run. For a small linear head on fixed features, this gives the optimizer repeated passes with modest cost and provides enough observations to see how validation loss changes. We saved the epoch with the lowest validation loss. The test set played no role in the choice of epoch, hyperparameters, or threshold.
 
 [[TABLE_TRAINING]]
 
-### D. Scope of the adaptation
+### C. Validation-only thresholds
 
-This experiment measures the usefulness of a pretrained representation after fitting a small classification head. It does not isolate the effect of pretraining against random initialization, compare frozen and fine-tuned backbones, or establish convergence. Such comparisons require additional predeclared runs on the same reviewed data protocol. The available result is a baseline checkpoint, not a completed hyperparameter study.
+For each seed and backbone we scored validation clips with the selected checkpoint. We tested thresholds from 0.05 to 0.95 in steps of 0.05 and maximized violence-class F1. Ties were broken by higher precision, then higher threshold. We locked the threshold before computing test metrics. We also report results at the fixed 0.50 threshold so both backbones can be compared under the same decision rule.
 
-The recorded run processes all 1,346 training examples, including the smaller final mini-batch, before validation. Loss is accumulated with sample-count weighting so a short last batch does not receive the same influence as a complete batch in the epoch summary. Evaluation disables gradient tracking and uses inference-time batch-normalization behavior. Validation and test reports include loss alongside thresholded classification metrics, but the available aggregate reports do not preserve enough score-level detail to reconstruct ROC or precision-recall curves.
-
-No data augmentation is applied by the dataset loader beyond the deterministic pretrained transform. The experiment therefore avoids an unreported source of sampling variability, while also leaving the potential benefit of augmentation untested. Future augmentation studies should distinguish appearance changes from transformations that alter the action semantics.
+The upload API exposes the predicted class and its softmax score. The monitor uses the violence score with separate state-transition thresholds. Clip-level F1 tuning does not calibrate scores or select an event-level alarm policy.
 
 <!-- page -->
 ## VI Continuous monitoring methodology
 
 ### A. Capture and recent-window construction
 
-Each configured camera has a capture worker, bounded timestamped frame storage, a recent preview, and an inference consumer. The monitoring defaults are a four-second window, sampling at up to four frames per second, and a one-second stride. The capture path supports validated network stream schemes and local video files for paced testing. Network failures cause a transition to an offline state and reconnect attempts with backoff.
+Each camera has a capture worker, a bounded buffer of timestamped samples, a recent preview, and a consumer for inference. By default, the capture worker samples up to four frames per second, and the monitor scores a four-second window with a one-second stride. The capture code accepts validated network stream URLs and local test files. A network failure moves the camera offline and triggers reconnect attempts with backoff.
 
-The buffer retains recent samples plus one sample preceding the current window boundary. Once the window has filled, 16 target timestamps are spaced across it. Each target selects the nearest available sample, repeating samples when a source is sparse. This avoids requiring 16 distinct decoded frames before inference on a low-frame-rate source. It cannot reconstruct motion that the source never supplied.
+The buffer keeps recent samples plus one sample just before the window boundary. After the window fills, the monitor spaces 16 target timestamps across it and uses the closest available sample for each timestamp. A slow source can contribute the same frame to several positions. Local test files are paced using presentation timestamps, or the frame rate when timestamps are missing, so decoding runs at playback speed.
 
 ### B. Latest-window scheduling
 
-Only the latest pending clip is retained for each camera. A new window replaces an older pending window and increments a dropped-window counter. A shared lock serializes model execution across cameras, uploads, and diagnostic streams. A consumer acquires the lock before taking the latest window and discards windows that are older than twice that camera's stride. This bounds pending inference work and prioritizes freshness over exhaustive analysis.
+Each camera can have one pending clip. If a newer window arrives first, it replaces the pending clip and increments the dropped-window counter. A shared lock allows one model call at a time across the monitor, uploads, and the diagnostic view. After acquiring the lock, a camera consumer takes its latest window and discards it if it is older than twice the camera's stride.
 
-The design limits queue growth but does not guarantee fairness between cameras. Consumers compete for the shared lock, and model throughput has not been benchmarked for increasing camera counts. If the model is consistently slower than the requested aggregate window rate, some windows will be replaced or discarded. Consequently, adding cameras can reduce temporal coverage even while memory remains bounded.
+Consumers compete for the same lock. When the total arrival rate exceeds the model's capacity, clips may be replaced or discarded. Adding cameras can therefore reduce how much footage gets scored even though the pending queue stays bounded. We did not measure how throughput changes as cameras are added.
 
 ### C. Hysteresis and event state
 
-A camera becomes VIOLENCE after three consecutive scores at or above 0.65. Once in that state, four consecutive scores at or below 0.40 return it to NORMAL. Scores between the thresholds reset the counters while preserving an existing violence state. A positive window alone does not immediately open an event. Before the confirmation count is reached, the camera can be reported as NORMAL, which must not be interpreted as a guarantee of absence.
+Three consecutive scores at or above 0.65 change a camera's state to VIOLENCE. Four consecutive scores at or below 0.40 return it to NORMAL. Scores between the thresholds reset the counters while preserving an active violence state. A camera can still read NORMAL after the first or second qualifying score.
 
 [[FIG_STATES]]
 
-With a one-second stride, three positive windows can confirm a state approximately two seconds after the first qualifying prediction, after the initial buffer has filled. This is an ideal scheduling interpretation, not a measured detection-delay result. Capture delay, inference contention, sampling phase, and the trained model's response can add further delay.
+At a one-second stride, the third qualifying prediction could arrive about two seconds after the first, once the buffer has filled. This is the timing implied by the settings. Capture delays, sampling phase, inference contention, and the model's response to the footage can increase it.
 
 ### D. Event lifetime and disconnection
 
-The active event records its start, latest update, and highest score. Events exist only in memory; closed events are removed rather than archived. A disconnect clears buffered frames, pending work, scores, counters, and the active event. A generation counter prevents a completed successful inference from an earlier connection from overwriting the newer state. The implementation does not provide a durable incident history, guaranteed alert delivery, or an evidence-retention service. Those capabilities would require a separate design and evaluation.
+An active event records its start, last update, and highest score. The monitor stores it in memory and removes it when it closes. A disconnect clears the buffer, pending window, score, counters, and event. A generation counter prevents a completed inference from the old connection from replacing the state of a new connection. The available event information is limited to the current process.
 
-The monitor reports connection status and detection state separately. An ONLINE connection can still be BUFFERING while the first temporal window is collected. Conversely, a retained prediction is not evidence that fresh frames are arriving. Public camera snapshots include time since the last sampled frame, processed rate, inference latency, and dropped windows to support diagnosis. These values describe the running instance; no aggregate latency or capacity measurements were saved for the experiment.
-
-Local test files are paced using presentation timestamps, with a frame-rate fallback when timestamps are absent. This prevents an offline decoder from treating an entire video as an instantaneous live burst.
+The dashboard shows connection and detection states separately. A camera can be ONLINE while its first window is still BUFFERING. The per-camera snapshot includes the age of the last frame, processed rate, inference latency, and the count of dropped windows. These values describe the running instance. The experiment did not save aggregate latency or capacity measurements.
 
 <!-- page -->
-## VII Application implementation and verification
+## VII Continuous replay benchmark
 
-### A. Uploaded-video workspace
+### A. Replay construction and labels
 
-The upload page supports file selection, drag and drop, local preview, and explicit submission. It checks filename extension, file size, and available browser metadata before enabling analysis. Browser codec support is independent of server decodability; an AVI or MKV file may lack a preview while remaining suitable for PyAV decoding. The API remains responsible for validating actual video contents and decoded limits.
+We assembled four 46-second files from reviewed, held-out RLVS clips with clear labels. Each replay contains non-violent footage and two five-second violence inserts, beginning at seconds 10 and 25. We resampled the clips to 384 by 216 at 12 frames per second. Short segments loop within their allotted time. The inserts and cuts are controlled test conditions, and each event's onset is the edit boundary. A delay calculated from that boundary is a replay delay.
 
-The interface separates byte-transfer progress from inference waiting. A percentage is displayed only while upload events provide measurable transfer progress. Once transfer completes, the application waits for the server without inventing a model-completion percentage. Prediction payloads are checked for allowed class strings and finite scores in the interval from zero to one.
+### B. Concurrent stream trials
 
-### B. API behavior and resource control
+We ran the project's capture and inference workers on the same Apple Silicon host with PyTorch MPS. Each trial replayed the same selected inputs at their presentation timestamps, with one, two, or four simultaneous streams. We scored 42 seconds per stream, including the four-second startup period, and kept the default four-second window, one-second stride, and hysteresis settings. The MC3-18 head from seed 42 was designated for the replay before seeing the test results.
 
-The service loads one shared checkpoint during startup. Model forwards run outside the asynchronous event loop, and a nonblocking inference lock rejects competing upload or diagnostic inference with HTTP 429. Uploaded files use temporary storage that is cleaned after processing. A request-body limit protects the prediction endpoint before the multipart parser writes an arbitrarily large upload to disk; application-level checks also enforce the file-size limit.
+We counted scheduled windows and completed predictions in the observation interval. The worker's dropped-window counter records replacement of a pending clip by a newer one. A gap between scheduled, completed, and replaced windows may include work pending at cutoff or a window that expired. Latency covers the time from the worker's inference call through score computation. Throughput counts completed windows per elapsed wall-clock second across all cameras.
 
-[[TABLE_API]]
+[[TABLE_MONITOR]]
 
-The health endpoint distinguishes process availability from model readiness. It can return HTTP 200 while reporting that no trained checkpoint is loaded. This allows the application to explain an unavailable model instead of treating every running backend as prediction-ready. Existing incompatible checkpoint metadata causes startup to fail visibly.
+### C. Event matching
 
-### C. Diagnostic camera and monitor views
+The first alert starting within an insert or in the four seconds after it counts as a match. Later alerts in the same interval are tracked separately. An insert with no matched alert is a miss, even when a prior alert was already active. We report delay only for matched events. False alert rate divides unmatched alerts by the negative exposure in camera-hours, excluding startup and each matching interval. Each stream contributes 20 seconds of such exposure per trial, so the rate is sensitive to a single alert.
 
-The single-camera view receives browser webcam keyframes or requests server-side decoding of a network camera. It polls status and requests analysis periodically. This is a diagnostic mode with a consuming frame queue, distinct from the timestamped overlapping windows used by the continuous monitor. It is not the experimental protocol underlying the video-level test metrics.
+[[TABLE_EVENTS]]
 
-The multi-camera dashboard receives state snapshots over a WebSocket, reconnects with backoff, and marks displayed statuses as potentially stale while disconnected. Native MJPEG image elements show sampled camera previews. Viewers share existing capture workers, so opening a preview does not create another camera connection. Preview rate follows sampled capture and is not a claim of full native-frame-rate playback.
+Event recall was 50% with one stream, 50% with two, and 75% with four. The four-stream trial completed all 130 scheduled windows at 3.10 windows per second, with a p95 inference latency of 114.51 ms. The 75% figure comes from a wider mix of replay inserts. It does not establish that higher concurrency improves detection. Across the three trials, the worker recorded zero replacements and zero false alerts in 140 seconds of scored negative exposure.
 
-### D. Verification evidence
-
-During preparation of this paper, the Python suite passed 27 tests. These exercise decoding and tensor layout, model/checkpoint compatibility, split constraints, API error behavior, webcam lifecycle, hysteresis, stale prediction rejection, and paced local monitoring. Ruff lint and mypy checks also passed. A formatting check flagged one auxiliary RLVS helper; formatting is not included as a completed clean check.
-
-The running upload, diagnostic, and monitor routes each returned HTTP 200, and the API health response reported a loaded MC3-18 model. These checks establish startup and selected functional behavior. They do not establish browser usability under every device, successful connection to an external CCTV installation, production security, or statistically reliable multi-camera capacity. Random-weight models in tests verify software plumbing and do not contribute to the research accuracy reported below.
-
-The application is intentionally separated from the training process so a user cannot accidentally present an untrained model as a result. A model-ready response reflects a checkpoint that passed loading checks, not certification of its predictive quality. Similarly, returning a correctly shaped prediction establishes the HTTP contract, while accuracy requires independent labeled evaluation. Keeping these meanings separate helps prevent development tests, demonstration requests, and experimental measurements from being combined into a single unsupported claim.
+The counts describe this short replay benchmark. Some clips contribute to more than one camera or trial, and the edits can produce motion changes that an unedited feed would not have. An annotated collection of long recordings from unrelated cameras is needed for a field estimate.
 
 <!-- page -->
-## VIII Experimental results
+## VIII Held-out classification results
 
-### A. Artifact consistency and evaluation population
+### A. Results across seeds
 
-The primary result comes from the saved test evaluation over 238 clips. Its checkpoint fingerprint matches the current best.pt file, and its manifest fingerprint matches the current splits.csv file. The checkpoint contains epoch 1 and the same validation statistics as the one-entry training history. These consistency checks link the reported result to an identifiable model and partition rather than to an illustrative interface response.
-
-There are 118 non-violence and 120 violence clips in the test partition. Evaluation uses the whole-video uniform sampling policy, the checkpoint's 16-frame setting, and the shared spatial transform. The winning logit selects the class. The positive class for precision, recall, and F1 is violence. No camera hysteresis is applied to these test predictions.
+The new grouped test set contains 397 clips. Each seed produces one checkpoint per backbone. The table reports the mean and sample standard deviation across the three seeds, in percentage points. All seeds share one test set. The standard deviations measure variation from head initialization and training order on that split.
 
 [[TABLE_RESULTS]]
 
-### B. Confusion matrix and error asymmetry
+The main comparison uses a fixed decision threshold of 0.50. MC3-18 reached 96.73% mean accuracy and 96.75% mean F1. The ResNet-18 frame-average model reached 95.97% mean accuracy and 95.95% mean F1. These values replace the original one-epoch experiment as the main results.
 
-The classifier correctly identifies 102 of 118 negative clips and 119 of 120 positive clips. It therefore makes 16 false-positive and one false-negative predictions, with 221 correct classifications overall. The high positive recall is accompanied by lower positive precision. Approximately 11.85% of the 135 positive predictions are incorrect under the available labels.
+### B. Errors in the fixed-threshold run
+
+The seed-42 MC3-18 run recorded 193 true positives, 191 true negatives, 8 false positives, and 5 false negatives at 0.50. We use this predesignated seed in the confusion matrix and replay. At the same cutoff, the other seeds had the same accuracy but sometimes disagreed on individual clips.
 
 [[FIG_CONFUSION]]
 
-Specificity is 102/118 = 86.44%, and the false-positive rate is 16/118 = 13.56%. The false-negative rate is 1/120 = 0.83%. Balanced accuracy, the mean of sensitivity and specificity, is 92.80%. These quantities are derived directly from the stored confusion matrix; they do not require access to individual confidence values. The error counts reveal behavior that overall accuracy alone would obscure.
+Precision gives the fraction of predicted positives that match the folder label. Recall gives the fraction of folder-labeled positives found. F1 is their harmonic mean. Accuracy counts correct labels over all clips. We report these clip metrics independently of the camera state machine.
 
-### C. Validation and training evidence
+### C. Loss across epochs
 
-The one saved epoch has training loss 0.3285 and validation loss 0.2456. Validation accuracy is 89.17%, precision 82.70%, recall 98.99%, and F1 90.11%. The validation confusion matrix contains 158 true negatives, 41 false positives, two false negatives, and 196 true positives. Thus the same recall-heavy error pattern appears in both available partitions.
-
-A single epoch does not support a learning-curve plot or a convergence claim. The lower test loss of 0.2092 and higher test accuracy relative to validation are observations of these fixed partitions, not evidence that test data is intrinsically easier or that further training would improve results. No causal explanation of individual errors is available without a separate visual error review.
-
-For clarity, accuracy is (TP+TN)/n, precision is TP/(TP+FP), recall is TP/(TP+FN), and F1 is 2TP/(2TP+FP+FN). Substituting TP=119, TN=102, FP=16, and FN=1 reproduces the reported values. Precision concerns the reliability of positive predictions, whereas recall concerns the fraction of labeled positives recovered. Neither metric describes how early within a video an incident is recognized, because each test clip receives only one classification.
-
-<!-- page -->
-## IX Statistical and operational interpretation
-
-### A. Sampling uncertainty
-
-A score computed from 238 clips is an estimate for the evaluated population, not a universal property of the model. A two-sided 95% Wilson interval for the observed accuracy of 221/238 is approximately 88.86% to 95.49%. Corresponding intervals are approximately 81.61% to 92.57% for precision, 95.43% to 99.85% for recall, and 79.10% to 91.48% for specificity. These intervals are newly derived from the saved counts using z = 1.96.
-
-The Wilson calculation assumes independent Bernoulli observations for the relevant proportion. Related clips or repeated source scenes can violate that assumption. The intervals should therefore be read as descriptive, conditional summaries, not as a correction for the unresolved source-group problem. There is no repeated-seed or repeated-split distribution in the available evidence.
+The figure plots the mean training and validation cross-entropy at every epoch for each backbone. Individual seed histories and the selected epochs are included in the experiment results.
 
 [[FIG_METRICS]]
 
-### B. Prevalence and alert burden
-
-The test partition is nearly class balanced, while many real camera streams may contain long periods without violent events. Precision depends on prevalence as well as sensitivity and specificity. As an illustrative calculation only, if sensitivity and specificity remained 99.17% and 86.44% at 1% positive prevalence, the implied positive predictive value would be about 6.88%. This is a hypothetical population calculation, not a measured deployment result.
-
-Using r for sensitivity, q for specificity, and p for prevalence, the calculation is PPV = (r p)/((r p) + (1-q)(1-p)). The assumption that clip-level rates transfer to another population is strong and untested. The example explains why high recall on balanced clips cannot establish a manageable alert workload on continuous CCTV footage.
-
-### C. What hysteresis does and does not establish
-
-Multiple qualifying windows can reduce rapid state changes, but adjacent windows overlap and their errors are dependent. It would be incorrect to cube the clip false-positive rate to estimate the probability of a three-window false alarm. Hysteresis thresholds and consecutive-window counts require their own event-level validation on continuous recordings with timestamps and negative durations.
-
-The stored evaluation also does not establish detection delay, false alerts per camera-hour, event recall, or localization precision. Those quantities need annotations describing when incidents begin and end, as well as a definition of what counts as a matched alert. A video-level positive label alone cannot supply this information for every four-second sub-window.
-
-### D. Other saved outputs
-
-The repository contains a separate 20-clip output with perfect classification. Its small sample and absent checkpoint/manifest fingerprint fields make it unsuitable as the primary evaluation result. It is excluded from the main results table rather than promoted as 100% accuracy. The 238-clip fingerprinted artifact is the basis for the paper's headline measurements. This distinction prevents a convenience check from replacing the more complete available evaluation.
-
-The plotted validation and test summaries come from one checkpoint and different fixed partitions. Their difference should not be interpreted as a statistically tested improvement from validation to test. Both reflect finite samples, and neither provides an estimate of training-seed variance. A paired comparison of two future models would require predictions on the same clips; aggregate metrics alone are insufficient to recover which clips one model corrects and another loses.
-
-Calibration would require score-level outputs and an independent calibration protocol. The current confusion matrix supports thresholded performance summaries, but cannot establish expected calibration error, a reliability curve, or a useful abstention threshold.
+Across the three MC3-18 runs, mean training loss fell from 0.5267 at epoch 1 to 0.0717 at epoch 20. Mean validation loss fell from 0.3824 to 0.1341. Validation loss selected epoch 19 for all three MC3-18 heads and epochs 19, 20, and 20 for the ResNet-18 heads.
 
 <!-- page -->
-## X Limitations, responsible use, and future experiments
+## IX Threshold selection and false alerts
 
-### A. Validity of the empirical claim
+### A. Clip classification thresholds
 
-The principal limitation is unverified related-source leakage. Exact hashes prevent identical retained files from crossing partitions, but do not establish independent camera scenes or original videos. The labels are inherited from folders, and no independent relabeling agreement study is available. Only one completed training epoch and one seed are recorded. These constraints limit both generalization claims and any comparison with external literature.
+The table compares the 0.50 rule with the threshold selected from validation for the seed-42 MC3-18 model. We use the same model and the same split in both rows of each partition. Thresholds for all runs and the complete validation sweeps are recorded with the experiment results.
 
-The model receives a small center crop of 16 uniformly spaced frames. It may ignore brief actions, peripheral interactions, or contextual information outside the crop. It processes RGB appearance without audio, pose, optical flow, or person identity. The stored aggregate metrics do not identify which visual factors caused the 17 test errors. Explanations involving occlusion, sports, lighting, or camera shake remain hypotheses until the individual errors are reviewed.
+[[TABLE_THRESHOLDS]]
 
-### B. Temporal and operational limitations
+Threshold changes move the trade-off between missed clips and flags for review. Tuning for clip-level F1 weights precision and recall symmetrically in the validation split. A camera alarm would need a separate event-based comparison of thresholds and hysteresis counts on long validation recordings before use.
 
-Training labels describe complete clips, whereas continuous monitoring applies the model to short overlapping windows. A positive clip need not contain violence in every sub-window. Naively assigning its label to every temporal crop would introduce additional label noise. A stronger window-level study requires localized annotations, careful review, or a documented weak-supervision strategy.
+### B. Interpreting scores at a low event rate
 
-The service is designed as a local single-worker prototype. Camera state and the shared model live in process memory. Restarting loses active sessions and events; multiple independent API workers would not share the same camera registry. The current system has no durable event database, role-based access control, or validated external alerting integration. Remote access therefore requires an appropriate surrounding deployment design, especially because previews can contain sensitive camera imagery.
+The new test split is much closer to balanced than many operational camera feeds would be. At a hypothetical 1% prevalence, transferring the seed-42 fixed-threshold test sensitivity and specificity without change would imply 19.67% positive predictive value. This calculation illustrates how changing prevalence can affect review workload. The test protocol cannot establish that its rates will transfer.
 
-### C. Human review and privacy
+Sports, play, physical assistance, and crowd activity can involve pushes, rapid movement, or close contact. These visual similarities can cause false positives. Camera shake and occlusion can make interactions harder to interpret. The error mechanism for a particular clip is unknown without reviewing the footage.
 
-Predictions should prioritize review rather than determine guilt, intent, or a person's identity. The binary label describes learned visual categories under a dataset protocol. It does not infer the legal or social meaning of an interaction. Softmax confidence is uncalibrated, and the study contains no demographic fairness assessment or consent audit of the public mirror.
+### C. Human review workflow
 
-Camera credentials should remain outside committed configuration files, and access to streams should be restricted. The monitoring design avoids archiving footage or closed events by default, but short-lived previews still expose visual information to connected viewers. Any operational study should define authorized access, retention, consent, reviewer responsibilities, and procedures for false alerts before collecting new footage.
+The dashboard should route high scores to a human reviewer as unverified flags. The reviewer should inspect the surrounding footage, check whether the camera view provides enough context, and record a disposition of confirmed, false alert, or insufficient evidence. False alerts and uncertain cases can be logged with their time and scene category for later analysis. Threshold changes should be evaluated using validation data drawn from those reviewed cases.
 
-### D. Prioritized future work
+The model's output describes a clip under a binary visual label. It cannot establish identity, intent, or responsibility. Any follow-up action should depend on the review and the applicable site procedures. The monitoring prototype has a current-event view in memory. A durable review log and access controls would require separate implementation.
 
-The first experimental priority is a reviewed source-group manifest followed by a fresh source-disjoint split. A predeclared comparison should then evaluate frozen MC3-18 against selective fine-tuning and alternative backbones, with repeated seeds and unchanged test data. This would separate representation choice, optimization variation, and training duration instead of attributing all effects to a single architectural label.
+For the predesignated MC3-18 run, validation selected 0.35. On the grouped test set, lowering the cutoff from 0.50 to 0.35 recovered one additional positive clip and flagged two additional negative clips. This increase in recall came with lower test precision.
 
-A second study should annotate continuous CCTV recordings and report event recall, false alerts per hour, delay distributions, and camera-specific performance. Thresholds must be selected using validation recordings before final testing. Calibration and uncertainty-based review policies can be evaluated separately. Engineering work should benchmark increasing camera counts, fairness under lock contention, reconnect recovery, shutdown behavior, and preview bandwidth. None of these proposed experiments is presented as already completed.
+<!-- page -->
+## X Limitations and follow-up validation
 
-A useful error-review extension would record each test path, true label, predicted label, and both class scores, then review mistakes with a fixed taxonomy. Categories might include missing temporal coverage, action outside the crop, ambiguous labels, and visually similar nonviolent movement. Review should include correct predictions as controls and avoid changing the test set merely to improve a score. The present paper does not assign those categories retrospectively without seeing the corresponding clips.
+### A. Related footage and label reliability
 
-Operational evaluation should also separate unavailable input from confident negative classification. A dropped window or disconnected camera is an absence of evidence, and should be counted in coverage reporting rather than silently removed from the denominator.
+The group split prevents exact matches and detected visual links from crossing training, validation, and test. The screen can miss genuinely related clips and link visually similar unrelated scenes. Trusted recording, camera, actor, and location identifiers would allow a stronger source-disjoint split. The archive also mixes staged footage, sports broadcasts, and other sources with camera recordings. The three training seeds capture variation on one partition and do not estimate sensitivity to how the groups were split.
+
+A single AI-assisted visual screen covered a small stratified sample using five frames per clip. The review assessed what was visible in the sampled frames. A full-video study would have two independent annotators use a shared labeling rubric, report raw agreement and Cohen's kappa, and adjudicate disagreements before training or evaluation.
+
+### B. Monitoring and deployment
+
+A positive clip label applies to the whole clip. Some windows in it may contain mostly ordinary activity. Our replay onset is the start of the inserted segment, and the matching rule allows a four-second grace interval. Overlapping windows share frames. Their scores can remain correlated, so alert-level error rates must be measured on continuous footage.
+
+The short replay load trials use local files with one capture resolution and no network transport. They do not test RTSP jitter, packet loss, network reconnection, or sustained performance under longer runs. The observed false alert rate derives from seconds of negative exposure per camera and should not be extrapolated to an operational shift.
+
+The prototype stores camera state and active events in a single worker's memory. It loses them on restart and gives separate workers separate registries. An operational study should secure preview access, keep credentials out of committed configuration, define consent and retention before recording, and record how reviewers handled flags.
+
+### C. Independent field evaluation
+
+A field evaluation needs unedited recordings from independent sites and an annotation protocol with event boundaries. Validation recordings should determine the operating thresholds and counts. A separate field test should then measure event recall and delay, false alerts over substantially longer negative exposure, per-camera coverage, and variation across lighting and views. A review of individual errors should include correct cases for comparison and record whether an error involved clipping, occlusion, fast motion, or an ambiguous label.
 
 <!-- page -->
 ## XI Reproducibility and conclusion
 
-### A. Reproducing the available result
+### A. Experiment records
 
-The primary evidence consists of the inspected dataset report, reviewed exclusion CSV, retained split manifest, checkpoint, training history, and fingerprinted test report. A reproducer should acquire the same dataset contents, regenerate or verify the manifest, and confirm that the checkpoint and manifest fingerprints match before comparing metrics. A new download can differ from the archived mirror even when its dataset title is unchanged.
+The feature extraction script verifies source hashes, decodes clips, and saves pooled features in chunks. Run scripts/review_features.py for MC3-18 and add --architecture resnet for the comparison. The script uses PyTorch 2.14.0 and torchvision 0.29.0 on Apple Silicon MPS. The head training runs on CPU. scripts/review_experiments.py generates the split and fits the six heads. The grouped manifest SHA-256 is 9df60ccff3cdba9550586f1cbf7e1781ae20714ed9c83dd10fec7f795a8195f3.
 
-The evaluation entry point is violence_detection.evaluate, with dataset root, manifest, checkpoint, and output arguments. It validates checkpoint metadata and the manifest fingerprint, verifies test file hashes, and uses the same frame loader as training. The training entry point is violence_detection.train. To reproduce the available run, its configuration must specify one epoch rather than assume the current 20-epoch baseline configuration produced the recorded checkpoint.
+The review sample and its labels are included in review-results.json. For a rerun, the sample labels can be restored from that file by mapping each sample ID to its review and note fields in review-labels.json. scripts/review_monitor.py provides the sample, replays, and benchmark stages. Replay assembly uses FFmpeg, and the benchmark loads the MC3-18 head from seed 42. scripts/build_review_results.py assembles the data used by the report generator. The deployed checkpoint from the original demonstration is separate from these experiment heads.
 
 [[TABLE_PROVENANCE]]
 
-For the recorded checkpoint, the manifest SHA-256 is c4afc39bfe575e12361ede16e5d2b1f65d3fa6a06cb3f15b0441dbe070313952. The checkpoint SHA-256 is 698e6d253c38f66abdcebd6e35f47c81222dccbb33ec3c10381ebd17ee483f3d. These identify the evaluated artifacts; they are not substitutes for publishing the permitted source data and complete protocol. The code and local generated artifacts remain subject to their respective distribution rights.
-
 ### B. Conclusion
 
-This project implements an end-to-end violence-classification research prototype with a pretrained video backbone, audited data handling, checkpoint validation, an inference API, and upload and camera interfaces. The saved one-epoch frozen-backbone MC3-18 checkpoint achieves 92.86% accuracy and 93.33% positive-class F1 on 238 locally held-out RLVS clips. Its errors are asymmetric: one positive clip is missed, while 16 negative clips are classified as violence.
+On 397 clips in the visually grouped test split, frozen MC3-18 averaged 96.73% accuracy and 96.75% positive-class F1 over three 20-epoch head-training runs. The ResNet-18 comparison averaged 95.97% accuracy and 95.95% F1. The report also separates validation-only threshold selection from the fixed-threshold comparison.
 
-The continuous monitoring implementation adds recent-window sampling, bounded pending work, reconnect handling, previews, and per-camera hysteresis. These are functioning engineering mechanisms, but the available experiment does not validate event detection or operational alert quality. Source-independent testing and continuous-video annotations remain necessary before stronger claims can be made. The defensible outcome is a traceable baseline and an inspectable application that can support those next experiments.
+The monitoring workers processed up to four paced replays on the local host. The benchmark measures alerts and delays under that specific setup. Longer unedited recordings, independent event annotation, and known original sources are still needed before using the prototype to make operational decisions.
 
 ## References
 

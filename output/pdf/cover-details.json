@@ -1,19 +1,22 @@
 {
   "authors": [
     {
-      "name": "Ashwin S",
+      "name": "Ashwin Sathiya Moorthy",
       "registration_number": "12308018",
-      "email": "theashgen06@gmail.com"
+      "email": "theashgen06@gmail.com",
+      "roll_number": "46"
     },
     {
       "name": "Prudhviraj K B",
       "registration_number": "12307060",
-      "email": "prudhvirajkb3@gmail.com"
+      "email": "prudhvirajkb3@gmail.com",
+      "roll_number": "17"
     },
     {
       "name": "Pranav R",
       "registration_number": "12306134",
-      "email": "pranavsandle@gmail.com"
+      "email": "pranavsandle@gmail.com",
+      "roll_number": "36"
     }
   ],
   "supervisor": "Enjula Uchoi",
