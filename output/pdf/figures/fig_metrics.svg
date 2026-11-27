@@ -2,110 +2,110 @@
 <!DOCTYPE svg
   PUBLIC '-//W3C//DTD SVG 1.0//EN'
   'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
-<svg width="246.63779527559058" height="160" preserveAspectRatio="xMinYMin meet" viewBox="0 0 246 160" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="246.63779527559058" height="152" preserveAspectRatio="xMinYMin meet" viewBox="0 0 246 152" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<title>...</title>
 	<desc>...</desc>
 	<clipPath id="clip">
-		<rect x="0" y="0" width="246.63779527559058" height="160"/>
+		<rect x="0" y="0" width="246.63779527559058" height="152"/>
 	</clipPath>
-	<g id="group" transform="scale(1,-1) translate(0,-160)" style="clip-path: url(#clip)">
+	<g id="group" transform="scale(1,-1) translate(0,-152)" style="clip-path: url(#clip)">
 		<g transform="">
-			<path d="M 32,24 L 236.637795,24 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
-			<text x="15.75" y="22.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,44) scale(1,-1)">0.00</text>
-			<path d="M 32,49.5 L 236.637795,49.5 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
-			<text x="15.75" y="47.5" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,95) scale(1,-1)">0.15</text>
-			<path d="M 32,75 L 236.637795,75 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
-			<text x="15.75" y="73.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,146) scale(1,-1)">0.30</text>
-			<path d="M 32,100.5 L 236.637795,100.5 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
-			<text x="15.75" y="98.5" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,197) scale(1,-1)">0.45</text>
-			<path d="M 32,126 L 236.637795,126 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
-			<text x="15.75" y="124.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,248) scale(1,-1)">0.60</text>
-			<text x="30.25" y="15" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,30) scale(1,-1)">1</text>
-			<text x="73.33164111065065" y="15" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,30) scale(1,-1)">5</text>
-			<text x="125.43369249896398" y="15" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,30) scale(1,-1)">10</text>
-			<text x="179.28574388727725" y="15" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,30) scale(1,-1)">15</text>
-			<text x="233.13779527559058" y="15" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,30) scale(1,-1)">20</text>
-			<path d="M 32,113.543045 L 42.77041,74.087567 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 42.77041,74.087567 L 53.540821,62.116014 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 53.540821,62.116014 L 64.311231,56.173512 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 64.311231,56.173512 L 75.081641,51.605502 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 75.081641,51.605502 L 85.852051,48.793458 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 85.852051,48.793458 L 96.622462,46.741244 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 96.622462,46.741244 L 107.392872,45.000675 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 107.392872,45.000675 L 118.163282,43.539271 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 118.163282,43.539271 L 128.933692,42.436769 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 128.933692,42.436769 L 139.704103,41.180845 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 139.704103,41.180845 L 150.474513,40.765352 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 150.474513,40.765352 L 161.244923,39.77987 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 161.244923,39.77987 L 172.015334,39.194852 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 172.015334,39.194852 L 182.785744,38.719437 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 182.785744,38.719437 L 193.556154,38.378915 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 193.556154,38.378915 L 204.326564,37.125481 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 204.326564,37.125481 L 215.096975,36.614005 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 215.096975,36.614005 L 225.867385,36.301648 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 225.867385,36.301648 L 236.637795,36.185409 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 32,89.006229 L 42.77041,70.295148 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 42.77041,70.295148 L 53.540821,63.44541 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 53.540821,63.44541 L 64.311231,57.788827 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 64.311231,57.788827 L 75.081641,55.638989 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 75.081641,55.638989 L 85.852051,52.736308 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 85.852051,52.736308 L 96.622462,51.083343 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 96.622462,51.083343 L 107.392872,50.573229 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 107.392872,50.573229 L 118.163282,49.449253 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 118.163282,49.449253 L 128.933692,48.454827 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 128.933692,48.454827 L 139.704103,48.574162 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 139.704103,48.574162 L 150.474513,48.239278 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 150.474513,48.239278 L 161.244923,47.837323 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 161.244923,47.837323 L 172.015334,47.002445 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 172.015334,47.002445 L 182.785744,47.273983 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 182.785744,47.273983 L 193.556154,47.865673 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 193.556154,47.865673 L 204.326564,46.316184 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 204.326564,46.316184 L 215.096975,46.229625 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 215.096975,46.229625 L 225.867385,46.07125 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 225.867385,46.07125 L 236.637795,46.796789 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 32,114.127689 L 42.77041,77.243412 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 42.77041,77.243412 L 53.540821,66.764028 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 53.540821,66.764028 L 64.311231,61.557795 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 64.311231,61.557795 L 75.081641,57.576293 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 75.081641,57.576293 L 85.852051,54.63257 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 85.852051,54.63257 L 96.622462,53.299997 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 96.622462,53.299997 L 107.392872,51.581136 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 107.392872,51.581136 L 118.163282,49.414244 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 118.163282,49.414244 L 128.933692,48.64042 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 128.933692,48.64042 L 139.704103,47.30536 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 139.704103,47.30536 L 150.474513,46.923221 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 150.474513,46.923221 L 161.244923,45.270384 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 161.244923,45.270384 L 172.015334,44.519984 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 172.015334,44.519984 L 182.785744,44.153201 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 182.785744,44.153201 L 193.556154,43.661445 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 193.556154,43.661445 L 204.326564,42.738009 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 204.326564,42.738009 L 215.096975,42.381375 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 215.096975,42.381375 L 225.867385,41.720456 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 225.867385,41.720456 L 236.637795,41.330503 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
-			<path d="M 32,88.632069 L 42.77041,71.399389 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 42.77041,71.399389 L 53.540821,65.038891 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 53.540821,65.038891 L 64.311231,59.768358 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 64.311231,59.768358 L 75.081641,56.568363 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 75.081641,56.568363 L 85.852051,54.528093 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 85.852051,54.528093 L 96.622462,53.771136 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 96.622462,53.771136 L 107.392872,51.659738 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 107.392872,51.659738 L 118.163282,50.554332 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 118.163282,50.554332 L 128.933692,50.017579 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 128.933692,50.017579 L 139.704103,49.421523 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 139.704103,49.421523 L 150.474513,49.546272 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 150.474513,49.546272 L 161.244923,49.295032 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 161.244923,49.295032 L 172.015334,48.240597 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 172.015334,48.240597 L 182.785744,47.865137 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 182.785744,47.865137 L 193.556154,47.995464 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 193.556154,47.995464 L 204.326564,47.391686 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 204.326564,47.391686 L 215.096975,46.686584 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 215.096975,46.686584 L 225.867385,46.52865 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<path d="M 225.867385,46.52865 L 236.637795,46.658579 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
-			<text x="32" y="135" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,270) scale(1,-1)">Cross-entropy</text>
-			<text x="124.09889763779529" y="3" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,6) scale(1,-1)">Epoch</text>
-			<text x="32" y="151" style="font-family: Times-Bold; font-size: 8px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,302) scale(1,-1)">MC3-18</text>
-			<text x="77" y="151" style="font-family: Times-Bold; font-size: 8px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,302) scale(1,-1)">ResNet-18</text>
-			<text x="149.13779527559058" y="151" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,302) scale(1,-1)">Solid: train  Dashed: validation</text>
+			<path d="M 32,22 L 236.637795,22 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="15.75" y="20.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,40) scale(1,-1)">0.00</text>
+			<path d="M 32,46.5 L 236.637795,46.5 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="15.75" y="44.5" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,89) scale(1,-1)">0.15</text>
+			<path d="M 32,71 L 236.637795,71 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="15.75" y="69.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,138) scale(1,-1)">0.30</text>
+			<path d="M 32,95.5 L 236.637795,95.5 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="15.75" y="93.5" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,187) scale(1,-1)">0.45</text>
+			<path d="M 32,120 L 236.637795,120 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="15.75" y="118.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,236) scale(1,-1)">0.60</text>
+			<text x="30.25" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">1</text>
+			<text x="73.33164111065065" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">5</text>
+			<text x="125.43369249896398" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">10</text>
+			<text x="179.28574388727725" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">15</text>
+			<text x="233.13779527559058" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">20</text>
+			<path d="M 32,108.031553 L 42.77041,70.123349 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 42.77041,70.123349 L 53.540821,58.621268 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 53.540821,58.621268 L 64.311231,52.911806 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 64.311231,52.911806 L 75.081641,48.522933 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 75.081641,48.522933 L 85.852051,45.821166 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 85.852051,45.821166 L 96.622462,43.849431 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 96.622462,43.849431 L 107.392872,42.177119 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 107.392872,42.177119 L 118.163282,40.773025 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 118.163282,40.773025 L 128.933692,39.713759 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 128.933692,39.713759 L 139.704103,38.507086 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 139.704103,38.507086 L 150.474513,38.107888 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 150.474513,38.107888 L 161.244923,37.161052 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 161.244923,37.161052 L 172.015334,36.598975 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 172.015334,36.598975 L 182.785744,36.142204 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 182.785744,36.142204 L 193.556154,35.815036 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 193.556154,35.815036 L 204.326564,34.610756 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 204.326564,34.610756 L 215.096975,34.119338 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 215.096975,34.119338 L 225.867385,33.819231 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 225.867385,33.819231 L 236.637795,33.70755 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 32,84.456966 L 42.77041,66.479652 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 42.77041,66.479652 L 53.540821,59.898531 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 53.540821,59.898531 L 64.311231,54.463775 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 64.311231,54.463775 L 75.081641,52.398244 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 75.081641,52.398244 L 85.852051,49.609394 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 85.852051,49.609394 L 96.622462,48.021251 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 96.622462,48.021251 L 107.392872,47.531142 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 107.392872,47.531142 L 118.163282,46.451243 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 118.163282,46.451243 L 128.933692,45.495814 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 128.933692,45.495814 L 139.704103,45.610469 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 139.704103,45.610469 L 150.474513,45.288719 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 150.474513,45.288719 L 161.244923,44.902526 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 161.244923,44.902526 L 172.015334,44.100388 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 172.015334,44.100388 L 182.785744,44.361277 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 182.785744,44.361277 L 193.556154,44.929764 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 193.556154,44.929764 L 204.326564,43.441039 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 204.326564,43.441039 L 215.096975,43.357875 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 215.096975,43.357875 L 225.867385,43.205711 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 225.867385,43.205711 L 236.637795,43.902797 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 32,108.59327 L 42.77041,73.155435 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 42.77041,73.155435 L 53.540821,63.087008 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 53.540821,63.087008 L 64.311231,58.08494 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 64.311231,58.08494 L 75.081641,54.259575 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 75.081641,54.259575 L 85.852051,51.431293 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 85.852051,51.431293 L 96.622462,50.150977 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 96.622462,50.150977 L 107.392872,48.499523 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 107.392872,48.499523 L 118.163282,46.417607 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 118.163282,46.417607 L 128.933692,45.674129 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 128.933692,45.674129 L 139.704103,44.391424 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 139.704103,44.391424 L 150.474513,44.024271 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 150.474513,44.024271 L 161.244923,42.436251 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 161.244923,42.436251 L 172.015334,41.715279 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 172.015334,41.715279 L 182.785744,41.362879 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 182.785744,41.362879 L 193.556154,40.890408 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 193.556154,40.890408 L 204.326564,40.003185 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 204.326564,40.003185 L 215.096975,39.660537 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 215.096975,39.660537 L 225.867385,39.025536 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 225.867385,39.025536 L 236.637795,38.650875 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1;"/>
+			<path d="M 32,84.097479 L 42.77041,67.540589 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 42.77041,67.540589 L 53.540821,61.429522 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 53.540821,61.429522 L 64.311231,56.365677 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 64.311231,56.365677 L 75.081641,53.291172 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 75.081641,53.291172 L 85.852051,51.330913 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 85.852051,51.330913 L 96.622462,50.60364 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 96.622462,50.60364 L 107.392872,48.575042 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 107.392872,48.575042 L 118.163282,47.512986 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 118.163282,47.512986 L 128.933692,46.997282 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 128.933692,46.997282 L 139.704103,46.424601 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 139.704103,46.424601 L 150.474513,46.544458 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 150.474513,46.544458 L 161.244923,46.30307 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 161.244923,46.30307 L 172.015334,45.289985 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 172.015334,45.289985 L 182.785744,44.929249 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 182.785744,44.929249 L 193.556154,45.054466 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 193.556154,45.054466 L 204.326564,44.474365 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 204.326564,44.474365 L 215.096975,43.796914 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 215.096975,43.796914 L 225.867385,43.645173 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 225.867385,43.645173 L 236.637795,43.770008 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<text x="32" y="128" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,256) scale(1,-1)">Cross-entropy</text>
+			<text x="124.09889763779529" y="2" style="font-family: Times-Roman; font-size: 8px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,4) scale(1,-1)">Epoch</text>
+			<text x="32" y="142" style="font-family: Times-Bold; font-size: 8px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,284) scale(1,-1)">MC3-18</text>
+			<text x="77" y="142" style="font-family: Times-Bold; font-size: 8px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,284) scale(1,-1)">ResNet-18</text>
+			<text x="149.13779527559058" y="142" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,284) scale(1,-1)">Solid: train  Dashed: validation</text>
 		</g>
 	</g>
 </svg>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="246.63779527559058" height="154" preserveAspectRatio="xMinYMin meet" viewBox="0 0 246 154" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="246.63779527559058" height="154"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-154)" style="clip-path: url(#clip)">
+		<g transform="">
+			<path d="M 30,22 L 216.637795,22 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="22.5" y="20.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,40) scale(1,-1)">0</text>
+			<text x="220.63779527559058" y="20.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,40) scale(1,-1)">0%</text>
+			<path d="M 30,46 L 216.637795,46 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="22.5" y="44.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,88) scale(1,-1)">3</text>
+			<text x="220.63779527559058" y="44.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,88) scale(1,-1)">8%</text>
+			<path d="M 30,70 L 216.637795,70 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="22.5" y="68.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,136) scale(1,-1)">6</text>
+			<text x="220.63779527559058" y="68.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,136) scale(1,-1)">16%</text>
+			<path d="M 30,94 L 216.637795,94 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="22.5" y="92.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,184) scale(1,-1)">9</text>
+			<text x="220.63779527559058" y="92.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,184) scale(1,-1)">24%</text>
+			<path d="M 30,118 L 216.637795,118 Z" style="stroke: rgb(86%,87%,88%); stroke-linecap: butt; stroke-width: 0.45;"/>
+			<text x="19.0" y="116.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,232) scale(1,-1)">12</text>
+			<text x="220.63779527559058" y="116.0" style="font-family: Times-Roman; font-size: 7px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,232) scale(1,-1)">32%</text>
+			<text x="28.25" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">1</text>
+			<text x="65.57755905511812" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">2</text>
+			<text x="102.90511811023623" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">4</text>
+			<text x="140.23267716535435" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">8</text>
+			<text x="175.81023622047246" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">12</text>
+			<text x="213.13779527559058" y="13" style="font-family: Times-Roman; font-size: 7px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,26) scale(1,-1)">16</text>
+			<path d="M 30,28.88 L 67.327559,35.68 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.2;"/>
+			<path d="M 30,22 L 67.327559,22 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 67.327559,35.68 L 104.655118,49.44 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.2;"/>
+			<path d="M 67.327559,22 L 104.655118,22 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 104.655118,49.44 L 141.982677,76.64 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.2;"/>
+			<path d="M 104.655118,22 L 141.982677,22 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 141.982677,76.64 L 179.310236,99.52 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.2;"/>
+			<path d="M 141.982677,22 L 179.310236,29.86 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<path d="M 179.310236,99.52 L 216.637795,103.52 Z" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1.2;"/>
+			<path d="M 179.310236,29.86 L 216.637795,93.88 Z" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1.1; stroke-dasharray: 2, 2;"/>
+			<circle cx="30.0" cy="28.880000000000003" r="2.1" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<circle cx="30.0" cy="22.0" r="2.1" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(58%,43%,30%); fill-rule: evenodd;"/>
+			<circle cx="67.32755905511812" cy="35.68" r="2.1" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<circle cx="67.32755905511812" cy="22.0" r="2.1" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(58%,43%,30%); fill-rule: evenodd;"/>
+			<circle cx="104.65511811023623" cy="49.44" r="2.1" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<circle cx="104.65511811023623" cy="22.0" r="2.1" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(58%,43%,30%); fill-rule: evenodd;"/>
+			<circle cx="141.98267716535435" cy="76.64" r="2.1" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<circle cx="141.98267716535435" cy="22.0" r="2.1" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(58%,43%,30%); fill-rule: evenodd;"/>
+			<circle cx="179.31023622047246" cy="99.52" r="2.1" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<circle cx="179.31023622047246" cy="29.86" r="2.1" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(58%,43%,30%); fill-rule: evenodd;"/>
+			<circle cx="216.63779527559058" cy="103.52" r="2.1" style="stroke: rgb(19%,36%,47%); stroke-linecap: butt; stroke-width: 1; fill: rgb(19%,36%,47%); fill-rule: evenodd;"/>
+			<circle cx="216.63779527559058" cy="93.88" r="2.1" style="stroke: rgb(58%,43%,30%); stroke-linecap: butt; stroke-width: 1; fill: rgb(58%,43%,30%); fill-rule: evenodd;"/>
+			<text x="30" y="126" style="font-family: Times-Bold; font-size: 7.5px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,252) scale(1,-1)">Win/s</text>
+			<text x="177.6827952755906" y="126" style="font-family: Times-Bold; font-size: 7.5px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,252) scale(1,-1)">Replaced %</text>
+			<text x="69.26264763779528" y="2" style="font-family: Times-Roman; font-size: 7.5px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,4) scale(1,-1)">Concurrent unedited CCTV streams</text>
+			<text x="30" y="142" style="font-family: Times-Bold; font-size: 7.5px;fill: rgb(19%,36%,47%); stroke:none;" transform="translate(0,284) scale(1,-1)">Throughput (solid)</text>
+			<text x="127.88279527559058" y="142" style="font-family: Times-Bold; font-size: 7.5px;fill: rgb(58%,43%,30%); stroke:none;" transform="translate(0,284) scale(1,-1)">Replaced windows (dashed)</text>
+		</g>
+	</g>
+</svg>

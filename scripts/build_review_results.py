@@ -37,6 +37,24 @@ def main():
         delays = row["delays_seconds"]
         summary["delay_mean_seconds"] = mean(delays) if delays else None
         monitor["runs"].append(summary)
+
+    external_benchmarks = {}
+    for ext_name in ("rwf2000_val", "bus_violence", "airtlab"):
+        ext_path = ROOT / f"ext-{ext_name}-results.json"
+        if ext_path.exists():
+            external_benchmarks[ext_name] = load(ext_path.name)
+
+    ucf_continuous = (
+        load("ucf-continuous-results.json")
+        if (ROOT / "ucf-continuous-results.json").exists()
+        else None
+    )
+    ucf_multicam = (
+        load("ucf-multicam-results.json")
+        if (ROOT / "ucf-multicam-results.json").exists()
+        else None
+    )
+
     evidence = {
         "audit": {
             k: v
@@ -50,8 +68,12 @@ def main():
         "models": models,
         "monitor": monitor,
         "replay_events": load("replay-events.json"),
+        "external_benchmarks": external_benchmarks,
+        "ucf_continuous": ucf_continuous,
+        "ucf_multicam": ucf_multicam,
     }
     DEST.write_text(json.dumps(evidence, indent=2) + "\n")
+    print(f"Wrote {DEST} ({DEST.stat().st_size} bytes)")
 
 
 if __name__ == "__main__":
